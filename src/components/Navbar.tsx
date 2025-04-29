@@ -9,10 +9,10 @@ const Navbar: React.FC = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
   
   const navLinks = [
-    { name: 'About', href: '#about' },
+    { name: 'Why Join', href: '#about' },
     { name: 'Timeline', href: '#timeline' },
-    { name: 'Prizes', href: '#prizes' },
-    { name: 'How It Works', href: '#how-it-works' },
+    { name: 'How to Win', href: '#how-it-works' },
+    { name: 'Product', href: '#prizes' },
     { name: 'Resources', href: '#resources' },
     { name: 'FAQ', href: '#faq' },
   ];
@@ -28,14 +28,14 @@ const Navbar: React.FC = () => {
 
   return (
     <nav 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-dark/90 backdrop-blur-lg shadow-lg' : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled ? 'bg-dark-500/90 backdrop-blur-lg shadow-lg py-2' : 'bg-transparent py-4'
       }`}
     >
-      <div className="container flex items-center justify-between h-20">
+      <div className="container flex items-center justify-between">
         <a href="#" className="flex items-center">
           <Logo className="h-10 w-auto" />
-          <span className="ml-2 text-xl font-bold font-poppins">XBesh</span>
+          {/* Removed the text logo */}
         </a>
         
         {/* Desktop Navigation */}
@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
               <li key={link.name}>
                 <a 
                   href={link.href} 
-                  className="text-light/80 hover:text-accent transition-colors duration-300"
+                  className="text-light/80 hover:text-accent-400 transition-colors duration-300 font-medium"
                 >
                   {link.name}
                 </a>
@@ -54,9 +54,9 @@ const Navbar: React.FC = () => {
           </ul>
           <a 
             href="#register" 
-            className="btn-primary"
+            className="btn-primary rounded-full"
           >
-            Register Now
+            Join Contest
           </a>
         </div>
         
@@ -72,14 +72,14 @@ const Navbar: React.FC = () => {
       
       {/* Mobile Navigation Menu */}
       {isOpen && (
-        <div className="md:hidden bg-dark/95 backdrop-blur-lg">
-          <div className="container py-4">
+        <div className="md:hidden bg-dark-500/95 backdrop-blur-lg">
+          <div className="container py-6">
             <ul className="space-y-4">
               {navLinks.map((link) => (
                 <li key={link.name}>
                   <a 
                     href={link.href} 
-                    className="block py-2 text-light/80 hover:text-accent transition-colors duration-300"
+                    className="block py-2 text-light/80 hover:text-accent-400 transition-colors duration-300"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.name}
@@ -89,10 +89,10 @@ const Navbar: React.FC = () => {
               <li className="pt-4">
                 <a 
                   href="#register" 
-                  className="block w-full text-center btn-primary"
+                  className="block w-full text-center btn-primary rounded-full"
                   onClick={() => setIsOpen(false)}
                 >
-                  Register Now
+                  Join Contest
                 </a>
               </li>
             </ul>

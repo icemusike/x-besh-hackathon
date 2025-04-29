@@ -15,11 +15,11 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
     completed: boolean;
   }) => {
     if (completed) {
-      return <span className="text-error">This deadline has passed</span>;
+      return <span className="text-error-500 font-bold">This deadline has passed</span>;
     }
     
     return (
-      <div className="grid grid-cols-4 gap-2 md:gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {[
           { value: days, label: 'Days' },
           { value: hours, label: 'Hours' },
@@ -27,10 +27,10 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
           { value: seconds, label: 'Seconds' }
         ].map((item, index) => (
           <div key={index} className="flex flex-col items-center">
-            <div className="w-full aspect-square flex items-center justify-center bg-primary/20 rounded-lg mb-1">
-              <span className="text-xl md:text-3xl font-bold font-poppins">{item.value}</span>
+            <div className="w-full aspect-square flex items-center justify-center bg-dark-100/50 rounded-xl border border-white/10 shadow-glass-sm mb-2 backdrop-blur-sm">
+              <span className="text-2xl md:text-4xl font-bold font-poppins gradient-text">{item.value}</span>
             </div>
-            <span className="text-xs md:text-sm text-light/70">{item.label}</span>
+            <span className="text-xs md:text-sm text-light/80 font-medium">{item.label}</span>
           </div>
         ))}
       </div>

@@ -1,75 +1,118 @@
 import React from 'react';
-import { UserPlus, Code2, FileCheck, Presentation } from 'lucide-react';
+import { CheckSquare, MousePointer, Trophy, Terminal, Braces, Code } from 'lucide-react';
 
 const HowItWorks: React.FC = () => {
   const steps = [
     {
-      icon: <UserPlus className="h-10 w-10 text-accent" />,
-      title: "Register",
-      description: "Sign up for the hackathon through our registration form. You'll get immediate access to resources and the XBesh API."
+      icon: <CheckSquare className="h-10 w-10 text-accent-400" />,
+      title: "1. Get approved",
+      description: "Click the JVZoo link, request approval (instant for Early-Bird list).",
+      code: "await jvzoo.requestApproval(affiliateId);"
     },
     {
-      icon: <Code2 className="h-10 w-10 text-accent" />,
-      title: "Build",
-      description: "Develop your project using the XBesh platform. Create something innovative that showcases the power of our affiliate tools."
+      icon: <MousePointer className="h-10 w-10 text-accent-400" />,
+      title: "2. Push pre-launch traffic",
+      description: "Email, social, ads—any clicks that buy the front-end count.",
+      code: "traffic.push(emails, social, ads);"
     },
     {
-      icon: <FileCheck className="h-10 w-10 text-accent" />,
-      title: "Submit",
-      description: "Submit your project before the deadline. Include a demo video, source code, and a brief description of your solution."
-    },
-    {
-      icon: <Presentation className="h-10 w-10 text-accent" />,
-      title: "Present",
-      description: "Selected finalists will present their projects during the live judging webinar for a chance to win amazing prizes."
+      icon: <Trophy className="h-10 w-10 text-accent-400" />,
+      title: "3. Top the mini-leaderboard",
+      description: "Highest number of confirmed FE sales by 07 May 23:59 EST wins.",
+      code: "if (yourSales > competitorSales) win($500);"
     }
   ];
 
   return (
-    <section id="how-it-works" className="section bg-dark/50">
-      <div className="container">
+    <section id="how-it-works" className="section bg-dark/50 relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
+      <div className="absolute top-1/2 left-0 w-full h-1/4 bg-gradient-to-r from-primary-900/20 to-accent-900/20 blur-3xl -z-10"></div>
+      
+      {/* Code-inspired floating elements */}
+      <div className="absolute top-20 right-10 hidden lg:block">
+        <div className="glass-card p-3 border-primary-400/20 shadow-neon-primary">
+          <div className="flex items-center mb-2">
+            <Terminal className="h-4 w-4 text-accent-400 mr-2" />
+            <span className="text-light/60 text-xs">win_contest.js</span>
+          </div>
+          <div className="font-mono text-xs text-light/60">
+            <div className="text-accent-300/80">function</div>
+            <div className="ml-2">
+              <span className="text-primary-400">winContest</span>
+              <span className="text-light/60">()</span> <span className="text-light/60">{`{`}</span>
+            </div>
+            <div className="ml-4 text-light/60">// Your code here</div>
+            <div className="ml-2 text-light/60">{`}`}</div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="absolute bottom-20 left-10 hidden lg:block">
+        <div className="glass-card p-3 border-accent-400/20 shadow-neon-accent">
+          <div className="flex items-center mb-2">
+            <Code className="h-4 w-4 text-primary-400 mr-2" />
+            <span className="text-light/60 text-xs">prize.js</span>
+          </div>
+          <div className="font-mono text-xs">
+            <div className="text-accent-300/80">const</div>
+            <div className="ml-2">
+              <span className="text-primary-400">prize</span>
+              <span className="text-accent-300/80"> = </span>
+              <span className="text-success-400">'$500'</span>;
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="container relative z-10">
         <div className="section-title">
-          <h2 className="gradient-text">How It Works</h2>
+          <h2 className="gradient-text">How to win the $500</h2>
           <p className="mt-4 max-w-2xl mx-auto text-light/80">
-            Participating in the XBesh Affiliate Hackathon is easy. Follow these simple steps to get started.
+            Follow these simple steps to compete for the $500 cash prize in the Early-Bird Affiliate Contest.
           </p>
         </div>
         
-        <div className="relative mt-16 max-w-4xl mx-auto">
+        <div className="relative mt-20 max-w-5xl mx-auto">
           {/* Connector Line (Desktop) */}
-          <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent -translate-y-1/2"></div>
+          <div className="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-accent-500 -translate-y-1/2 rounded-full shadow-neon"></div>
           
           {/* Steps */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {steps.map((step, index) => (
               <div key={index} className="relative flex flex-col items-center text-center">
                 {/* Step Number (Desktop) */}
-                <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-dark border-2 border-primary text-primary font-bold text-lg mb-6 z-10">
+                <div className="hidden md:flex absolute -top-6 left-1/2 transform -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-dark-100/80 border-2 border-primary-400 text-primary-400 font-bold text-lg z-10 shadow-neon-primary">
                   {index + 1}
                 </div>
                 
                 {/* Step Content */}
-                <div className="glass-card p-6 md:pt-12 w-full h-full">
-                  {/* Step Number (Mobile) */}
-                  <div className="md:hidden flex items-center justify-center w-10 h-10 rounded-full bg-dark border-2 border-primary text-primary font-bold text-lg mb-4 mx-auto">
-                    {index + 1}
-                  </div>
-                  
-                  <div className="flex items-center justify-center w-16 h-16 rounded-full bg-dark/50 mb-4 mx-auto">
+                <div className="glass-card-hover p-8 w-full h-full border-white/10 hover:border-primary-400/30 hover:shadow-neon-primary transition-all duration-500">
+                  <div className="icon-circle-lg mb-6 mx-auto bg-gradient-to-br from-dark-100/50 to-dark-200/50">
                     {step.icon}
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                  <p className="text-light/70">{step.description}</p>
+                  <h3 className="text-xl font-bold mb-4">{step.title}</h3>
+                  <p className="text-light/80 mb-6">{step.description}</p>
+                  
+                  {/* Code snippet */}
+                  <div className="mt-auto pt-4 border-t border-white/10">
+                    <div className="font-mono text-xs text-accent-400/70 flex justify-center">
+                      <code>{step.code}</code>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Floating decoration */}
+                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-accent-500/20 rounded-lg border border-accent-400/20 flex items-center justify-center rotate-12 animate-float hidden md:flex" style={{ animationDelay: `${index * 0.5}s` }}>
+                  <Braces className="h-4 w-4 text-accent-400" />
                 </div>
               </div>
             ))}
           </div>
         </div>
         
-        <div className="mt-16 text-center">
-          <a href="#register" className="btn-primary">
-            Start Your Journey
-          </a>
+        <div className="mt-10 text-center">
+          <p className="text-light/70 italic font-mono text-sm">// Tie-breaker = total gross revenue;</p>
         </div>
       </div>
     </section>
