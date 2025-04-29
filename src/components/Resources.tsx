@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Mail, Video, Image, Download, Code, Terminal, Braces } from 'lucide-react';
 
 const Resources: React.FC = () => {
@@ -29,6 +29,24 @@ const Resources: React.FC = () => {
     }
   ];
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const fadeElements = document.querySelectorAll('.fade-in');
+    fadeElements.forEach(el => observer.observe(el));
+
+    return () => {
+      fadeElements.forEach(el => observer.unobserve(el));
+    };
+  }, []);
+
   return (
     <section id="resources" className="section bg-dark relative overflow-hidden">
       {/* Code-inspired background elements */}
@@ -36,10 +54,10 @@ const Resources: React.FC = () => {
       <div className="absolute bottom-20 left-10 w-80 h-80 bg-accent-600/5 rounded-lg border border-accent-400/10 rotate-12 backdrop-blur-sm hidden lg:block"></div>
       
       {/* Floating code elements */}
-      <div className="absolute top-40 left-5 hidden lg:flex items-center">
+      <div className="absolute top-40 left-5 hidden lg:flex items-center fade-in">
         <Terminal className="h-5 w-5 text-primary-400/40 mr-2" />
         <div className="font-mono text-xs text-primary-400/40">
-          <span className="text-accent-300/40">async function</span> <span className="text-primary-400/40">getPromoAssets</span>() {'{'}...{'}'}
+          <span className="typewriter text-accent-300/40">async function</span> <span className="typewriter typewriter-delay-1 text-primary-400/40">getPromoAssets</span>() {'{'}...{'}'}
         </div>
       </div>
       
@@ -55,7 +73,7 @@ const Resources: React.FC = () => {
           {resources.map((resource, index) => (
             <div 
               key={index} 
-              className="glass-card-hover p-6 flex flex-col items-center text-center relative border-white/10 hover:border-primary-400/30 hover:shadow-neon-primary transition-all duration-500"
+              className={`glass-card-hover p-6 flex flex-col items-center text-center relative border-white/10 hover:border-primary-400/30 hover:shadow-neon-primary transition-all duration-500 fade-in fade-in-delay-${index + 1}`}
             >
               <div className="icon-circle-md mb-4 bg-gradient-to-br from-dark-100/50 to-dark-200/50">
                 {resource.icon}
@@ -78,18 +96,18 @@ const Resources: React.FC = () => {
           ))}
         </div>
         
-        <div className="mt-16 text-center">
-          <a href="#" className="btn-primary rounded-full px-8 py-4 relative overflow-hidden group">
-            <span className="relative z-10">Download Media Pack</span>
+        <div className="mt-16 text-center fade-in fade-in-delay-4">
+          <a href="#hero" className="btn-primary rounded-full px-8 py-4 relative overflow-hidden group">
+            <span className="relative z-10">Register Now</span>
             <span className="absolute top-0 right-full w-full h-full bg-white/20 transform transition-transform duration-1000 ease-out group-hover:right-0"></span>
           </a>
         </div>
         
         {/* Floating code element */}
-        <div className="absolute bottom-10 right-10 hidden lg:flex items-center">
+        <div className="absolute bottom-10 right-10 hidden lg:flex items-center fade-in fade-in-delay-2">
           <Code className="h-5 w-5 text-accent-400/40 mr-2" />
           <div className="font-mono text-xs text-accent-400/40">
-            <span className="text-accent-300/40">export default</span> <span className="text-primary-400/40">PromoResources</span>;
+            <span className="typewriter text-accent-300/40">export default</span> <span className="typewriter typewriter-delay-1 text-primary-400/40">PromoResources</span>;
           </div>
         </div>
       </div>

@@ -53,10 +53,10 @@ const Navbar: React.FC = () => {
             ))}
           </ul>
           <a 
-            href="#register" 
+            href="#hero" 
             className="btn-primary rounded-full"
           >
-            Join Contest
+            Join Hackathon
           </a>
         </div>
         
@@ -88,11 +88,11 @@ const Navbar: React.FC = () => {
               ))}
               <li className="pt-4">
                 <a 
-                  href="#register" 
+                  href="#hero" 
                   className="block w-full text-center btn-primary rounded-full"
                   onClick={() => setIsOpen(false)}
                 >
-                  Join Contest
+                  Join Hackathon
                 </a>
               </li>
             </ul>

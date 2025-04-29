@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DollarSign, Zap, Code, Briefcase, Users, Package, Terminal, Braces, Database } from 'lucide-react';
 
 const Prizes: React.FC = () => {
@@ -16,6 +16,24 @@ const Prizes: React.FC = () => {
   const codeSnippet2 = "const winner = affiliates.find(a => a.sales === Math.max(...affiliates.map(a => a.sales)));";
   const codeSnippet3 = "await payPrize(winner, '$500');";
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const fadeElements = document.querySelectorAll('.fade-in');
+    fadeElements.forEach(el => observer.observe(el));
+
+    return () => {
+      fadeElements.forEach(el => observer.unobserve(el));
+    };
+  }, []);
+
   return (
     <section id="prizes" className="section bg-dark relative overflow-hidden">
       {/* Code-inspired background elements */}
@@ -23,23 +41,23 @@ const Prizes: React.FC = () => {
       <div className="absolute bottom-40 left-10 w-64 h-64 bg-accent-600/5 rounded-lg border border-accent-400/10 rotate-12 backdrop-blur-sm hidden lg:block"></div>
       
       {/* Floating code elements */}
-      <div className="absolute top-20 left-10 hidden lg:block">
+      <div className="absolute top-20 left-10 hidden lg:block fade-in">
         <div className="glass-card p-3 border-primary-400/20 shadow-neon-primary">
           <div className="flex items-center mb-2">
             <Terminal className="h-4 w-4 text-accent-400 mr-2" />
             <span className="text-light/60 text-xs">prize_calculation.js</span>
           </div>
           <div className="font-mono text-xs">
-            <div className="text-accent-300/80">function</div>
-            <div className="ml-2">
+            <div className="typewriter text-accent-300/80">function</div>
+            <div className="typewriter typewriter-delay-1 ml-2">
               <span className="text-primary-400">calculatePrize</span>
               <span className="text-light/60">()</span> <span className="text-light/60">{`{`}</span>
             </div>
-            <div className="ml-4">
+            <div className="typewriter typewriter-delay-2 ml-4">
               <span className="text-accent-300/80">return</span>
               <span className="text-success-400 ml-1">'$500'</span>;
             </div>
-            <div className="ml-2 text-light/60">{`}`}</div>
+            <div className="typewriter typewriter-delay-3 ml-2 text-light/60">{`}`}</div>
           </div>
         </div>
       </div>
@@ -53,7 +71,7 @@ const Prizes: React.FC = () => {
         </div>
         
         {/* Prize Card */}
-        <div className="max-w-2xl mx-auto mb-20 relative">
+        <div className="max-w-2xl mx-auto mb-20 relative fade-in">
           <div className="glass-card-hover p-10 text-center border-primary-400/30 shadow-neon-primary">
             <div className="icon-circle-lg mx-auto mb-6 bg-gradient-to-br from-dark-100/50 to-dark-200/50">
               <DollarSign className="h-12 w-12 text-accent-400" />
@@ -80,8 +98,8 @@ const Prizes: React.FC = () => {
               </div>
             </div>
             
-            <a href="#register" className="btn-primary rounded-full px-8 py-4 relative overflow-hidden group">
-              <span className="relative z-10">Compete Now</span>
+            <a href="#hero" className="btn-primary rounded-full px-8 py-4 relative overflow-hidden group">
+              <span className="relative z-10">Register Now</span>
               <span className="absolute top-0 right-full w-full h-full bg-white/20 transform transition-transform duration-1000 ease-out group-hover:right-0"></span>
             </a>
           </div>
@@ -97,7 +115,7 @@ const Prizes: React.FC = () => {
         </div>
         
         {/* Product Snapshot */}
-        <div className="mt-24">
+        <div className="mt-24 fade-in fade-in-delay-2">
           <div className="section-title mb-12">
             <h2 className="gradient-text">What you're promoting: XBesh AGI</h2>
             <p className="mt-4 max-w-3xl mx-auto text-light/80">

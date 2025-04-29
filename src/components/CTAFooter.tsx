@@ -22,13 +22,13 @@ const CTAFooter: React.FC = () => {
             <span className="text-white/80 text-xs">register.js</span>
           </div>
           <div className="font-mono text-xs text-white/80">
-            <div className="text-white/80">async function</div>
-            <div className="ml-2">
-              <span className="text-white/90">approveOnJVZoo</span>
-              <span className="text-white/80">()</span> <span className="text-white/80">{`{`}</span>
+            <div className="typewriter text-white/80">{"async function"}</div>
+            <div className="typewriter typewriter-delay-1 ml-2">
+              <span className="text-white/90">{"registerHackathon"}</span>
+              <span className="text-white/80">{"()"}</span> <span className="text-white/80">{"{}"}</span>
             </div>
-            <div className="ml-4 text-white/80">// Your code here</div>
-            <div className="ml-2 text-white/80">{`}`}</div>
+            <div className="typewriter typewriter-delay-2 ml-4 text-white/80">{"// Your code here"}</div>
+            <div className="typewriter typewriter-delay-3 ml-2 text-white/80">{"}"}</div>
           </div>
         </div>
       </div>
@@ -40,11 +40,11 @@ const CTAFooter: React.FC = () => {
             <span className="text-white/80 text-xs">success.js</span>
           </div>
           <div className="font-mono text-xs text-white/80">
-            <div className="text-white/80">const</div>
-            <div className="ml-2">
-              <span className="text-white/90">success</span>
-              <span className="text-white/80"> = </span>
-              <span className="text-white/80">true;</span>
+            <div className="typewriter text-white/80">{"const"}</div>
+            <div className="typewriter typewriter-delay-1 ml-2">
+              <span className="text-white/90">{"success"}</span>
+              <span className="text-white/80">{" = "}</span>
+              <span className="text-white/80">{"true;"}</span>
             </div>
           </div>
         </div>
@@ -53,20 +53,20 @@ const CTAFooter: React.FC = () => {
       <div className="container relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-8 glow-text">
-            Ready to crush the leader-board?
+            Ready to build the future?
           </h2>
           
           <p className="text-xl text-white/90 mb-12 max-w-2xl mx-auto">
-            Clock's ticking. Secure your link, queue your emails, and let's bank.
+            Join hundreds of innovators in the XBesh Affiliate Hackathon and showcase your skills to the world.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <a 
-              href="#" 
+              href="#hero" 
               className="btn bg-white text-primary-600 hover:bg-white/90 focus:ring-white w-full sm:w-auto rounded-full px-8 py-4 shadow-neon font-bold text-lg relative overflow-hidden group"
             >
               <span className="relative z-10 flex items-center justify-center">
-                Approve Me On JVZoo 🚀
+                Join the Hackathon 🚀
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
               </span>
               <span className="absolute top-0 right-full w-full h-full bg-primary-500/20 transform transition-transform duration-1000 ease-out group-hover:right-0"></span>

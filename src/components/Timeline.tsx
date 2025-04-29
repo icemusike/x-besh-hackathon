@@ -1,50 +1,68 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Calendar, Award, ShoppingCart, Terminal, Code, Braces } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
 import { AddToCalendarButton } from 'add-to-calendar-button-react';
 
 const Timeline: React.FC = () => {
   // Event dates
-  const contestEndDate = new Date('2025-05-08T04:59:00Z'); // May 7, 2025, 23:59 EST
-  const winnerRevealDate = new Date('2025-05-08T14:30:00Z'); // May 8, 2025, 10:30 EST
-  const launchDate = new Date('2025-05-08T15:00:00Z'); // May 8, 2025, 11:00 EST
+  const contestEndDate = new Date('2025-05-06T04:59:00Z'); // May 5, 2025, 23:59 EST
+  const judgingDate = new Date('2025-05-06T18:00:00Z'); // May 6, 2025, 2 PM EST
+  const launchDate = new Date('2025-05-08T15:00:00Z'); // May 8, 2025, 11 AM EST
   
   const timelineEvents = [
     {
       icon: <Calendar className="h-8 w-8 text-accent-400" />,
-      title: "Drive clicks & front-end sales",
-      date: "NOW – 07 May 2025, 23:59 EST",
-      description: "Drive traffic and sales through your JVZoo affiliate link (auto-tracked in JVZoo).",
+      title: "Registration & Project Building",
+      date: "NOW – 05 May 2025, 23:59 EST",
+      description: "Register for the hackathon and start building your project. Submit your entry before the deadline.",
       targetDate: contestEndDate,
       current: true,
-      code: "// Current phase\nconst phase = 'TRAFFIC_GENERATION';"
+      code: "// Current phase\nconst phase = 'PROJECT_BUILDING';"
     },
     {
       icon: <Award className="h-8 w-8 text-accent-400" />,
-      title: "$500 winner revealed live",
-      date: "08 May 2025, 10:30 EST",
-      description: "Winner announced 30 minutes before the official cart opens.",
-      targetDate: winnerRevealDate,
+      title: "Live Judging Webinar",
+      date: "06 May 2025, 2 PM EST",
+      description: "Join our live webinar where judges will review the top projects and provide feedback.",
+      targetDate: judgingDate,
       calendarEvent: {
-        name: "XBesh Contest - $500 Winner Reveal",
-        startDate: "2025-05-08",
-        startTime: "10:30",
-        endTime: "11:00",
+        name: "XBesh Hackathon - Live Judging Webinar",
+        startDate: "2025-05-06",
+        startTime: "14:00",
+        endTime: "16:00",
         timeZone: "America/New_York",
         location: "Online Webinar",
-        description: "$500 winner of the XBesh Early-Bird Affiliate Contest revealed live."
+        description: "Live judging of the XBesh Affiliate Hackathon 2025 projects."
       },
-      code: "// Winner announcement\nawait contest.announceWinner();"
+      code: "// Judging phase\nawait contest.evaluateProjects();"
     },
     {
       icon: <ShoppingCart className="h-8 w-8 text-accent-400" />,
-      title: "Official launch & main leaderboard",
-      date: "08 May 2025, 11:00 EST",
-      description: "The official XBesh AGI product launch begins and the main affiliate leaderboard kicks off.",
+      title: "XBesh Cart Opening & Winner Reveal",
+      date: "08 May 2025, 11 AM EST",
+      description: "The official XBesh product launch begins and hackathon winners are announced.",
       targetDate: launchDate,
-      code: "// Main launch begins\nconst mainContest = new Contest();"
+      code: "// Winner announcement\nconst winner = await contest.announceWinner();"
     }
   ];
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    const fadeElements = document.querySelectorAll('.fade-in');
+    fadeElements.forEach(el => observer.observe(el));
+
+    return () => {
+      fadeElements.forEach(el => observer.unobserve(el));
+    };
+  }, []);
 
   return (
     <section id="timeline" className="section bg-dark/50 relative overflow-hidden">
@@ -52,15 +70,15 @@ const Timeline: React.FC = () => {
       <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
       
       {/* Code-inspired floating elements */}
-      <div className="absolute top-20 left-10 hidden lg:block">
+      <div className="absolute top-20 left-10 hidden lg:block fade-in">
         <div className="glass-card p-3 border-primary-400/20 shadow-neon-primary">
           <div className="flex items-center mb-2">
             <Terminal className="h-4 w-4 text-accent-400 mr-2" />
             <span className="text-light/60 text-xs">timeline.js</span>
           </div>
           <div className="font-mono text-xs text-light/60">
-            <div className="text-accent-300/80">const</div>
-            <div className="ml-2">
+            <div className="typewriter text-accent-300/80">const</div>
+            <div className="typewriter typewriter-delay-1 ml-2">
               <span className="text-primary-400">timeline</span>
               <span className="text-accent-300/80"> = </span>
               <span className="text-light/60">[...];</span>
@@ -71,9 +89,9 @@ const Timeline: React.FC = () => {
       
       <div className="container relative z-10">
         <div className="section-title">
-          <h2 className="gradient-text">Early-Bird Contest Timeline</h2>
+          <h2 className="gradient-text">Event Timeline</h2>
           <p className="mt-4 max-w-2xl mx-auto text-light/80">
-            Mark these key dates in your calendar to maximize your chances of winning the $500 prize.
+            Mark these key dates in your calendar to stay on track throughout the hackathon.
           </p>
         </div>
         
@@ -84,7 +102,7 @@ const Timeline: React.FC = () => {
           {/* Timeline events */}
           <div className="space-y-16">
             {timelineEvents.map((event, index) => (
-              <div key={index} className={`relative ${index % 2 === 0 ? 'md:text-right' : ''}`}>
+              <div key={index} className={`relative ${index % 2 === 0 ? 'md:text-right' : ''} fade-in fade-in-delay-${index + 1}`}>
                 {/* Desktop layout */}
                 <div className="hidden md:flex items-center">
                   <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12' : 'pl-12 order-last'}`}>
