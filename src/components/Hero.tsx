@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, CheckCircle, AlertCircle, Code, Terminal, Braces, Database, Server, Cpu } from 'lucide-react';
+import { ArrowRight, CheckCircle, AlertCircle, Code, Terminal, Braces, Database, Server, Cpu, Trophy } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
 
 const Hero: React.FC = () => {
@@ -17,7 +17,7 @@ const Hero: React.FC = () => {
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const isValidAffiliateId = (id: string) => /^[a-zA-Z0-9]{6,}$/.test(id);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Reset status
@@ -37,15 +37,39 @@ const Hero: React.FC = () => {
       return;
     }
     
-    // Simulate form submission
+    // Set submitting state
     setIsSubmitting(true);
     
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      // Send data to n8n webhook
+      const response = await fetch('https://callflujent.app.n8n.cloud/webhook-test/e2649dd1-1c27-40fb-83ae-da6568e99046', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          affiliateId,
+          email,
+          timestamp: new Date().toISOString(),
+          source: 'XBesh Affiliate Hackathon Landing Page'
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      // Handle success
       setFormStatus('success');
-      // In a real app, you would send this data to your backend
-      console.log('Form submitted:', { affiliateId, email });
-    }, 1500);
+      console.log('Form submitted successfully:', { affiliateId, email });
+    } catch (error) {
+      // Handle error
+      setFormStatus('error');
+      setErrorMessage('There was an error submitting your registration. Please try again.');
+      console.error('Submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -70,20 +94,27 @@ const Hero: React.FC = () => {
               </p>
             </div>
             
-            <h1 className="mb-6 font-extrabold leading-tight glow-text">
-              Be First. <br />
-              <span className="gradient-text">Get Paid Early.</span>
+            {/* Updated headline with CAPS and split into 2 rows */}
+            <h1 className="mb-6 font-extrabold leading-tight glow-text uppercase">
+              AFFILIATE HACKATHON <br />
+              <span className="gradient-text">$500 COMPETITION</span>
             </h1>
             
             <p className="mb-6 text-xl text-light/90 max-w-2xl mx-auto">
               $500 cash goes to the affiliate who drives the most action <em>before</em> the main launch even starts.
             </p>
             
-            {/* Prize highlight - Made more prominent */}
-            <div className="inline-block mb-10 px-8 py-4 bg-success-600/20 border-2 border-success-500/30 rounded-xl animate-pulse-slow shadow-neon">
-              <p className="text-2xl font-bold text-success-400 glow-text">
-                $500 Grand Prize Competition
-              </p>
+            {/* Enhanced $500 competition banner */}
+            <div className="mb-10 py-6 px-8 bg-gradient-to-r from-success-600/30 to-success-500/20 border-2 border-success-500/40 rounded-2xl shadow-[0_0_25px_rgba(0,196,140,0.3)] animate-pulse-slow">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-success-500/20 border border-success-400/30">
+                  <Trophy className="h-8 w-8 text-success-400" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-success-400 glow-text mb-1">$500 GRAND PRIZE</h2>
+                  <p className="text-light/90">Winner-takes-all competition for early affiliates</p>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -100,12 +131,14 @@ const Hero: React.FC = () => {
                 <div className="space-y-3 font-mono text-sm">
                   <div className="flex">
                     <span className="text-primary-400 mr-2">1</span>
-                    <span className="text-accent-300">const</span>
-                    <span className="text-light/80 mx-2">contest</span>
-                    <span className="text-accent-300">=</span>
-                    <span className="text-light/80 mx-2">new</span>
-                    <span className="text-primary-400">XBeshContest</span>
-                    <span className="text-light/80">();</span>
+                    <div className="typewriter">
+                      <span className="text-accent-300">const</span>
+                      <span className="text-light/80 mx-2">contest</span>
+                      <span className="text-accent-300">=</span>
+                      <span className="text-light/80 mx-2">new</span>
+                      <span className="text-primary-400">XBeshContest</span>
+                      <span className="text-light/80">();</span>
+                    </div>
                   </div>
                   <div className="flex">
                     <span className="text-primary-400 mr-2">2</span>
@@ -113,14 +146,16 @@ const Hero: React.FC = () => {
                   </div>
                   <div className="flex">
                     <span className="text-primary-400 mr-2">3</span>
-                    <span className="text-accent-300">await</span>
-                    <span className="text-light/80 mx-2">contest.register</span>
-                    <span className="text-primary-400">(</span>
-                    <span className="text-success-400">'affiliateId'</span>
-                    <span className="text-light/80">,</span>
-                    <span className="text-success-400 ml-2">'email'</span>
-                    <span className="text-primary-400">)</span>
-                    <span className="text-light/80">;</span>
+                    <div className="typewriter typewriter-delay-1">
+                      <span className="text-accent-300">await</span>
+                      <span className="text-light/80 mx-2">contest.register</span>
+                      <span className="text-primary-400">(</span>
+                      <span className="text-success-400">'affiliateId'</span>
+                      <span className="text-light/80">,</span>
+                      <span className="text-success-400 ml-2">'email'</span>
+                      <span className="text-primary-400">)</span>
+                      <span className="text-light/80">;</span>
+                    </div>
                   </div>
                   <div className="flex">
                     <span className="text-primary-400 mr-2">4</span>
@@ -128,11 +163,13 @@ const Hero: React.FC = () => {
                   </div>
                   <div className="flex">
                     <span className="text-primary-400 mr-2">5</span>
-                    <span className="text-accent-300">const</span>
-                    <span className="text-light/80 mx-2">prize</span>
-                    <span className="text-accent-300">=</span>
-                    <span className="text-success-400 mx-2">'$500'</span>
-                    <span className="text-light/80">;</span>
+                    <div className="typewriter typewriter-delay-2">
+                      <span className="text-accent-300">const</span>
+                      <span className="text-light/80 mx-2">prize</span>
+                      <span className="text-accent-300">=</span>
+                      <span className="text-success-400 mx-2">'$500'</span>
+                      <span className="text-light/80">;</span>
+                    </div>
                   </div>
                   <div className="flex">
                     <span className="text-primary-400 mr-2">6</span>
@@ -140,25 +177,31 @@ const Hero: React.FC = () => {
                   </div>
                   <div className="flex">
                     <span className="text-primary-400 mr-2">7</span>
-                    <span className="text-accent-300">if</span>
-                    <span className="text-primary-400">(</span>
-                    <span className="text-light/80">contest.sales</span>
-                    <span className="text-accent-300">{'>'}</span>
-                    <span className="text-light/80">competitors.sales</span>
-                    <span className="text-primary-400">)</span>
-                    <span className="text-light/80 mx-2">{`{`}</span>
+                    <div className="typewriter typewriter-delay-3">
+                      <span className="text-accent-300">if</span>
+                      <span className="text-primary-400">(</span>
+                      <span className="text-light/80">contest.sales</span>
+                      <span className="text-accent-300">{'>'}</span>
+                      <span className="text-light/80">competitors.sales</span>
+                      <span className="text-primary-400">)</span>
+                      <span className="text-light/80 mx-2">{`{`}</span>
+                    </div>
                   </div>
                   <div className="flex">
                     <span className="text-primary-400 mr-2">8</span>
-                    <span className="text-light/80 ml-4">you.receive</span>
-                    <span className="text-primary-400">(</span>
-                    <span className="text-light/80">prize</span>
-                    <span className="text-primary-400">)</span>
-                    <span className="text-light/80">;</span>
+                    <div className="typewriter typewriter-delay-4">
+                      <span className="text-light/80 ml-4">you.receive</span>
+                      <span className="text-primary-400">(</span>
+                      <span className="text-light/80">prize</span>
+                      <span className="text-primary-400">)</span>
+                      <span className="text-light/80">;</span>
+                    </div>
                   </div>
                   <div className="flex">
                     <span className="text-primary-400 mr-2">9</span>
-                    <span className="text-light/80">{`}`}</span>
+                    <div className="typewriter typewriter-delay-5">
+                      <span className="text-light/80">{`}`}</span>
+                    </div>
                   </div>
                   
                   {/* Animated cursor */}
