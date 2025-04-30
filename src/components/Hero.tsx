@@ -14,8 +14,8 @@ const Hero: React.FC = () => {
     'dev@company.io'
   ]);
   
-  // Form state
-  const [affiliateId, setAffiliateId] = useState('');
+  // Form state - Renamed affiliateId to name
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState<null | 'success' | 'error'>(null);
@@ -86,9 +86,9 @@ const Hero: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
   
-  // Form validation
+  // Form validation - Updated for name
   const isValidEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isValidAffiliateId = (id: string) => /^[a-zA-Z0-9]{6,}$/.test(id);
+  const isValidName = (name: string) => name.trim().length > 0; // Simple check for non-empty name
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,10 +97,10 @@ const Hero: React.FC = () => {
     setFormStatus(null);
     setErrorMessage('');
     
-    // Validate inputs
-    if (!isValidAffiliateId(affiliateId)) {
+    // Validate inputs - Updated for name
+    if (!isValidName(name)) {
       setFormStatus('error');
-      setErrorMessage('Please enter a valid JVZoo Affiliate ID (at least 6 alphanumeric characters)');
+      setErrorMessage('Please enter your name');
       return;
     }
     
@@ -114,14 +114,14 @@ const Hero: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Send data to n8n webhook
+      // Send data to n8n webhook - Updated to send name
       const response = await fetch('https://callflujent.app.n8n.cloud/webhook-test/e2649dd1-1c27-40fb-83ae-da6568e99046', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          affiliateId,
+          name,
           email,
           timestamp: new Date().toISOString(),
           source: 'XBesh Affiliate Hackathon Landing Page'
@@ -129,12 +129,18 @@ const Hero: React.FC = () => {
       });
       
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        // Log more detailed error info if available
+        let errorBody = 'Unknown error';
+        try {
+          errorBody = await response.text();
+        } catch {}
+        console.error('Webhook response error:', response.status, response.statusText, errorBody);
+        throw new Error(`Network response was not ok: ${response.statusText}`);
       }
       
       // Handle success
       setFormStatus('success');
-      console.log('Form submitted successfully:', { affiliateId, email });
+      console.log('Form submitted successfully:', { name, email });
     } catch (error) {
       // Handle error
       setFormStatus('error');
@@ -591,7 +597,8 @@ const Hero: React.FC = () => {
                     <button 
                       onClick={() => {
                         setFormStatus(null);
-                        setAffiliateId('');
+                        // Reset name field
+                        setName(''); 
                         setEmail('');
                       }}
                       className="px-6 py-3 bg-transparent border-2 border-primary-500 text-primary-400 rounded-full hover:bg-primary-500/10 transition-all duration-300 font-medium hover:shadow-glow-primary-sm"
@@ -605,7 +612,7 @@ const Hero: React.FC = () => {
                     <form onSubmit={handleSubmit} className="p-6 flex-grow">
                       <div className="space-y-6 h-full flex flex-col">
                         <div className="space-y-2">
-                          <label htmlFor="affiliateId" className="flex items-center text-sm font-medium text-gray-300">
+                          <label htmlFor="name" className="flex items-center text-sm font-medium text-gray-300">
                             Your Name <span className="text-pink-500 ml-1">*</span>
                             <span className="ml-auto text-xs text-gray-500 bg-gray-800/50 px-2 py-0.5 rounded">Required</span>
                           </label>
@@ -614,9 +621,9 @@ const Hero: React.FC = () => {
                             <div className="relative">
                               <input
                                 type="text"
-                                id="affiliateId"
-                                value={affiliateId}
-                                onChange={(e) => setAffiliateId(e.target.value)}
+                                id="name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
                                 className="w-full px-4 py-3 pl-10 bg-gray-800/90 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-white placeholder-gray-500 shadow-inner"
                                 placeholder="Enter your full name"
                                 required
