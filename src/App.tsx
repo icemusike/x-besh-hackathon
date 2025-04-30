@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -10,6 +11,7 @@ import FAQ from './components/FAQ';
 import CTAFooter from './components/CTAFooter';
 import Footer from './components/Footer';
 import FloatingCTA from './components/FloatingCTA';
+import ConfirmedHackathonRegistration from './components/ConfirmedHackathonRegistration';
 
 function App() {
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
@@ -32,15 +34,22 @@ function App() {
   return (
     <div className="min-h-screen bg-dark text-light">
       <Navbar />
-      <main>
-        <Hero />
-        <About />
-        <Timeline />
-        <Prizes />
-        <HowItWorks />
-        <Resources />
-        <FAQ />
-        <CTAFooter />
+      <main className="bg-dark">
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Hero />
+              <About />
+              <Timeline />
+              <Prizes />
+              <HowItWorks />
+              <Resources />
+              <FAQ />
+              <CTAFooter />
+            </>
+          } />
+          <Route path="/confirmed-hackathon-registration" element={<ConfirmedHackathonRegistration />} />
+        </Routes>
       </main>
       <Footer />
       {showFloatingCTA && <FloatingCTA />}

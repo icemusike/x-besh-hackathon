@@ -1,22 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Logo from './Logo';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-dark py-8">
-      <div className="container">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center mb-4 md:mb-0">
-            <Logo className="h-8 w-auto" />
-            {/* Removed the text logo */}
-          </div>
-          
-          <p className="text-light/60 text-sm text-center">
-            © {currentYear} XBesh Labs. Contest managed under JVZoo affiliate TOS. Void where prohibited.
-          </p>
-        </div>
+    <footer className="bg-gray-950 border-t border-gray-800/50 py-8">
+      <div className="container mx-auto px-4 text-center">
+        <Link to="/" className="inline-block mb-4">
+          <Logo />
+        </Link>
+        
+        <p className="text-sm text-gray-500">
+          © {currentYear} XBesh Labs. Contest managed under JVZoo affiliate TOS. Void where prohibited.
+        </p>
       </div>
     </footer>
   );
