@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, CheckCircle, AlertCircle, Code, Terminal, Braces, Database, Server, Cpu, Trophy, Users, Clock, Check } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
 
 const Hero: React.FC = () => {
+  const navigate = useNavigate();
   // Registration end date: May 7, 2025, 23:59 EST
   const registrationEndDate = new Date('2025-05-08T04:59:00Z');
   
@@ -114,8 +116,8 @@ const Hero: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Send data to n8n webhook - Updated to send name and use PUT method
-      const response = await fetch('https://callflujent.app.n8n.cloud/webhook-test/e2649dd1-1c27-40fb-83ae-da6568e99046', {
+      // Send data to n8n webhook - Updated to LIVE URL and PUT method
+      const response = await fetch('https://callflujent.app.n8n.cloud/webhook/e2649dd1-1c27-40fb-83ae-da6568e99046', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -150,6 +152,13 @@ const Hero: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Social Sharing Links
+  const shareUrl = window.location.href; // Or a specific landing page URL
+  const shareTitle = "Join the XBesh $500 Early-Bird Affiliate Sprint!";
+  const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`;
+  const linkedinShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+  // Add other platforms as needed (e.g., Facebook)
 
   return (
     <section id="hero" className="relative min-h-screen flex items-center pt-20">
@@ -500,11 +509,11 @@ const Hero: React.FC = () => {
                       <div className="text-xs text-gray-400 font-mono">
                         {currentStep === 5 ? '0.4ms' : (Math.random() * 100).toFixed(1) + 'ms'}
                       </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              
+                
               {/* Countdown Timer moved under browser window */}
               <div className="mt-6 text-center pt-4 border-t border-gray-800/30">
                 <div className="inline-block px-3 py-1 text-xs bg-primary-500/20 text-primary-300 rounded-full mb-2 font-medium">
@@ -560,205 +569,145 @@ const Hero: React.FC = () => {
               
               {/* Enhanced Registration Form - IMPROVED TO MATCH BROWSER WINDOW STYLE */}
               <div className="rounded-xl overflow-hidden shadow-glow-form border-2 border-gray-700/80 bg-gray-950 flex flex-col backdrop-blur-sm" style={{ maxHeight: "560px" }}>
-                {/* Browser-like header to match the left side */}
+                {/* Browser-like header to match the left side - Conditional Badge */}
                 <div className="flex items-center bg-gray-900 px-4 py-3 border-b border-gray-800/70">
                   <div className="flex space-x-2 mr-4">
-                    <div className="w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors"></div>
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
                   <div className="flex-grow">
                     <div className="w-full bg-gray-800/80 rounded-full h-6 flex items-center px-3">
-                      <div className="w-2 h-2 rounded-full bg-primary-500 mr-2"></div>
-                      <div className="text-xs text-gray-400 font-mono">secure.xbesh.ai/register</div>
+                      <div className={`w-2 h-2 rounded-full mr-2 ${formStatus === 'success' ? 'bg-green-500' : 'bg-primary-500'}`}></div>
+                      <div className="text-xs text-gray-400 font-mono">
+                        {formStatus === 'success' ? 'secure.xbesh.ai/completed' : 'secure.xbesh.ai/register'}
+                      </div>
                     </div>
                   </div>
-                  <div className="ml-4 px-3 py-1 bg-gradient-to-r from-green-600/20 to-green-500/20 rounded-full flex items-center gap-1.5 border border-green-500/30">
-                    <span className="text-green-400 text-sm">🔒</span>
-                    <span className="text-xs text-green-300 font-medium">Secure</span>
-                  </div>
+                  {/* Conditional Badge: Secure vs Confirmed */}
+                  {formStatus === 'success' ? (
+                     <div className="ml-4 px-3 py-1 bg-gradient-to-r from-green-600/20 to-green-500/20 rounded-full flex items-center gap-1.5 border border-green-500/30">
+                      <span className="text-green-400 text-sm">✅</span>
+                      <span className="text-xs text-green-300 font-medium">Confirmed</span>
+                    </div>
+                  ) : (
+                    <div className="ml-4 px-3 py-1 bg-gradient-to-r from-green-600/20 to-green-500/20 rounded-full flex items-center gap-1.5 border border-green-500/30">
+                      <span className="text-green-400 text-sm">🔒</span>
+                      <span className="text-xs text-green-300 font-medium">Secure</span>
+                    </div>
+                  )}
                 </div>
                 
                 {formStatus === 'success' ? (
-                  <div className="flex flex-col items-center justify-center py-12 px-6 bg-gradient-to-b from-gray-900 to-gray-950 flex-grow">
+                  <div className="flex flex-col items-center justify-center py-10 px-6 bg-gradient-to-b from-gray-900 to-gray-950 flex-grow">
                     {/* Success animation circle */}
-                    <div className="relative inline-flex items-center justify-center w-24 h-24 mb-8">
+                    <div className="relative inline-flex items-center justify-center w-20 h-20 mb-6">
                       <div className="absolute w-full h-full rounded-full bg-success-600/20 animate-ping-slow"></div>
                       <div className="absolute w-full h-full rounded-full bg-success-600/30 scale-75 animate-ping-slow" style={{ animationDelay: '0.5s' }}></div>
-                      <div className="relative w-20 h-20 rounded-full bg-success-600/40 flex items-center justify-center border-2 border-success-500 shadow-[0_0_25px_rgba(0,196,140,0.5)]">
-                        <CheckCircle className="h-10 w-10 text-success-400" />
+                      <div className="relative w-16 h-16 rounded-full bg-success-600/40 flex items-center justify-center border-2 border-success-500 shadow-[0_0_20px_rgba(0,196,140,0.4)]">
+                        <CheckCircle className="h-8 w-8 text-success-400" />
                       </div>
                     </div>
                     
-                    <h3 className="text-2xl font-bold mb-4 text-white text-center">Registration Successful!</h3>
-                    <p className="text-gray-300 mb-8 text-center max-w-md">
-                      Thank you for registering for the XBesh Early-Bird Affiliate Contest. Check your email for confirmation and next steps.
+                    <h3 className="text-2xl font-bold mb-3 text-white text-center">Registration Confirmed!</h3>
+                    {/* Updated success message with sharing prompt */}
+                    <p className="text-gray-300 mb-6 text-center max-w-md text-sm">
+                      You're in! Check your email for details. Why not share the excitement with your network?
                     </p>
+                    
+                    {/* Social Sharing Buttons */}
+                    <div className="flex space-x-4 mb-8">
+                      <a href={twitterShareUrl} target="_blank" rel="noopener noreferrer" title="Share on Twitter" className="w-10 h-10 rounded-full bg-blue-600/20 border border-blue-500/30 flex items-center justify-center cursor-pointer hover:bg-blue-600/30 transition-colors">
+                        <svg className="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.67.88-.53 1.56-1.37 1.88-2.38-.83.49-1.75.85-2.72 1.04C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.76 2.81 1.91 3.58-.71 0-1.37-.22-1.95-.54v.05c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.94.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.01-.06C2.64 18.45 4.27 19 6.12 19c7.34 0 11.35-6.08 11.35-11.35 0-.17 0-.34-.01-.51.78-.57 1.45-1.28 1.99-2.08z"></path></svg>
+                      </a>
+                      <a href={linkedinShareUrl} target="_blank" rel="noopener noreferrer" title="Share on LinkedIn" className="w-10 h-10 rounded-full bg-blue-800/20 border border-blue-700/30 flex items-center justify-center cursor-pointer hover:bg-blue-800/30 transition-colors">
+                        <svg className="w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+                      </a>
+                      {/* Add GitHub or other icons similarly */}
+                    </div>
+                    
+                    {/* Button to navigate to confirmation page, passing state */}
                     <button 
-                      onClick={() => {
-                        setFormStatus(null);
-                        // Reset name field
-                        setName(''); 
-                        setEmail('');
-                      }}
-                      className="px-6 py-3 bg-transparent border-2 border-primary-500 text-primary-400 rounded-full hover:bg-primary-500/10 transition-all duration-300 font-medium hover:shadow-glow-primary-sm"
+                      onClick={() => navigate('/confirmed-hackathon-registration', { state: { participantName: name, participantEmail: email } })} 
+                      className="px-8 py-3 bg-gradient-to-r from-primary-600 to-accent-500 text-white rounded-full hover:from-primary-500 hover:to-accent-400 transition-all duration-300 font-medium hover:shadow-neon focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark focus:ring-primary-400"
                     >
-                      Register Another Participant
+                      Next Step...
                     </button>
+                    {/* Text under the button */}
+                    <p className="text-xs text-gray-400 mt-4 text-center max-w-xs">
+                      VIP Affiliate Strategies, Resources, and ideas to win the $500 Hackathon await on the next page!
+                    </p>
                   </div>
                 ) : (
                   <div className="bg-gradient-to-b from-gray-900 to-gray-950 flex flex-col h-full">
                     {/* Form Body */}
                     <form onSubmit={handleSubmit} className="p-6 flex-grow">
+                      {/* ... ALL the form content from before goes here ... */}
+                      {/* Name Input, Email Input, Scarcity Card, Error Message, Button, Security Text */} 
                       <div className="space-y-6 h-full flex flex-col">
+                        {/* Name Input */}  
                         <div className="space-y-2">
-                          <label htmlFor="name" className="flex items-center text-sm font-medium text-gray-300">
-                            Your Name <span className="text-pink-500 ml-1">*</span>
-                            <span className="ml-auto text-xs text-gray-500 bg-gray-800/50 px-2 py-0.5 rounded">Required</span>
-                          </label>
+                          <label htmlFor="name" className="flex items-center text-sm font-medium text-gray-300">Your Name <span className="text-pink-500 ml-1">*</span><span className="ml-auto text-xs text-gray-500 bg-gray-800/50 px-2 py-0.5 rounded">Required</span></label>
                           <div className="relative group">
                             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-600 to-accent-600 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
                             <div className="relative">
-                              <input
-                                type="text"
-                                id="name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="w-full px-4 py-3 pl-10 bg-gray-800/90 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-white placeholder-gray-500 shadow-inner"
-                                placeholder="Enter your full name"
-                                required
-                              />
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
-                              </div>
-                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></div>
-                              </div>
+                              <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} className="w-full px-4 py-3 pl-10 bg-gray-800/90 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-white placeholder-gray-500 shadow-inner" placeholder="Enter your full name" required />
+                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
+                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"><div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></div></div>
                             </div>
                           </div>
                         </div>
-                        
+                        {/* Email Input */}  
                         <div className="space-y-2">
-                          <label htmlFor="email" className="flex items-center text-sm font-medium text-gray-300">
-                            Email Address <span className="text-pink-500 ml-1">*</span>
-                            <span className="ml-auto text-xs text-gray-500 bg-gray-800/50 px-2 py-0.5 rounded">Required</span>
-                          </label>
+                          <label htmlFor="email" className="flex items-center text-sm font-medium text-gray-300">Email Address <span className="text-pink-500 ml-1">*</span><span className="ml-auto text-xs text-gray-500 bg-gray-800/50 px-2 py-0.5 rounded">Required</span></label>
                           <div className="relative group">
                             <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-600 to-accent-600 rounded-xl blur opacity-30 group-hover:opacity-70 transition duration-500"></div>
                             <div className="relative">
-                              <input
-                                type="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-3 pl-10 bg-gray-800/90 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-white placeholder-gray-500 shadow-inner"
-                                placeholder="Enter your email address"
-                                required
-                              />
-                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                              </div>
-                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></div>
-                              </div>
+                              <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 pl-10 bg-gray-800/90 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-white placeholder-gray-500 shadow-inner" placeholder="Enter your email address" required />
+                              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div>
+                              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"><div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse"></div></div>
                             </div>
                           </div>
                         </div>
-                        
-                        {/* Enhanced Social Proof in Form with better scarcity */}
+                        {/* Scarcity Card */}  
                         <div className="p-4 bg-gradient-to-r from-gray-800/90 to-gray-900/90 border border-gray-700/80 rounded-xl relative overflow-hidden">
-                          {/* Animated shimmering effect */}
-                          <div className="absolute inset-0 overflow-hidden">
-                            <div className="absolute -inset-[50%] z-10 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 animate-beam-slide"></div>
-                          </div>
-                          
-                          {/* Content */}
+                          <div className="absolute inset-0 overflow-hidden"><div className="absolute -inset-[50%] z-10 bg-gradient-to-r from-transparent via-white/5 to-transparent transform -skew-x-12 animate-beam-slide"></div></div>
                           <div className="relative z-20">
                             <div className="flex items-center border-b border-gray-700/50 pb-3 mb-3">
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-600/30 to-primary-600/30 border border-accent-500/30 flex items-center justify-center mr-3 shadow-glow-accent-sm">
-                                <Trophy className="h-5 w-5 text-accent-400" />
-                            </div>
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-600/30 to-primary-600/30 border border-accent-500/30 flex items-center justify-center mr-3 shadow-glow-accent-sm"><Trophy className="h-5 w-5 text-accent-400" /></div>
                             <div className="flex-grow">
-                              <div className="flex items-center justify-between">
-                                  <p className="text-sm font-medium text-gray-200">Competition closes soon</p>
-                                  <span className="px-2 py-0.5 bg-red-900/40 border border-red-700/40 rounded text-xs text-red-400 font-medium animate-pulse">Ending Soon</span>
-                                </div>
+                                <div className="flex items-center justify-between"><p className="text-sm font-medium text-gray-200">Competition closes soon</p><span className="px-2 py-0.5 bg-red-900/40 border border-red-700/40 rounded text-xs text-red-400 font-medium animate-pulse">Ending Soon</span></div>
                                 <p className="text-xs text-gray-400 mt-0.5">Join {affiliateCount} others competing for the $500 prize</p>
                               </div>
                             </div>
-                            
-                            <div className="flex items-center justify-between mb-1.5">
-                              <span className="text-xs text-gray-400">Filling quickly</span>
-                              <span className="text-xs text-yellow-400/90 font-semibold">{Math.max(0, 150 - affiliateCount)} spots left</span>
-                            </div>
-                            
+                            <div className="flex items-center justify-between mb-1.5"><span className="text-xs text-gray-400">Filling quickly</span><span className="text-xs text-yellow-400/90 font-semibold">{Math.max(0, 150 - affiliateCount)} spots left</span></div>
                             <div className="h-2 w-full bg-gray-800/80 rounded-full overflow-hidden border border-gray-700/50">
-                              <div 
-                                className="h-full bg-gradient-to-r from-accent-500 to-primary-500 rounded-full relative" 
-                                style={{ width: `${Math.min(100, (affiliateCount / 150) * 100)}%` }}
-                              >
-                                {/* Animate glow effect */}
-                                <div className="absolute inset-0 bg-gradient-to-r from-accent-500/0 via-white/30 to-accent-500/0 animate-beam-slide" style={{animationDuration: '2s'}}></div>
+                              <div className="h-full bg-gradient-to-r from-accent-500 to-primary-500 rounded-full relative" style={{ width: `${Math.min(100, (affiliateCount / 150) * 100)}%` }}><div className="absolute inset-0 bg-gradient-to-r from-accent-500/0 via-white/30 to-accent-500/0 animate-beam-slide" style={{animationDuration: '2s'}}></div></div>
                               </div>
-                            </div>
-                            
-                            {/* Live updates */}
                             <div className="flex justify-between items-center mt-3 pt-2 border-t border-gray-700/30">
-                              <div className="flex items-center">
-                                <div className="relative mr-2 w-2 h-2">
-                                  <div className="absolute inset-0 bg-green-500 rounded-full animate-ping"></div>
-                                  <div className="absolute inset-0 bg-green-500 rounded-full"></div>
-                                </div>
-                                <span className="text-xs text-green-400">Live updates</span>
-                              </div>
-                              
-                              <div className="text-xs text-gray-500 flex items-center">
-                                <Users className="h-3 w-3 mr-1 text-gray-500" />
-                                <span>{affiliateCount} registered</span>
-                              </div>
+                              <div className="flex items-center"><div className="relative mr-2 w-2 h-2"><div className="absolute inset-0 bg-green-500 rounded-full animate-ping"></div><div className="absolute inset-0 bg-green-500 rounded-full"></div></div><span className="text-xs text-green-400">Live updates</span></div>
+                              <div className="text-xs text-gray-500 flex items-center"><Users className="h-3 w-3 mr-1 text-gray-500" /><span>{affiliateCount} registered</span></div>
                             </div>
                           </div>
                         </div>
-                        
+                        {/* Error Message */}  
                         {formStatus === 'error' && (
                           <div className="flex items-start p-4 bg-pink-950/60 border border-pink-800/70 rounded-xl">
                             <AlertCircle className="h-5 w-5 text-pink-500 mr-3 flex-shrink-0 mt-0.5" />
                             <p className="text-sm text-pink-300">{errorMessage}</p>
                           </div>
                         )}
-                        
+                        {/* Submit Button & Security Text */}  
                         <div className="pt-4 mt-auto space-y-4">
-                          <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="relative w-full py-4 px-6 rounded-xl overflow-hidden group"
-                          >
-                            {/* Button base with gradient */}
+                          <button type="submit" disabled={isSubmitting} className="relative w-full py-4 px-6 rounded-xl overflow-hidden group">
                             <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-purple-600 rounded-xl"></div>
-                            
-                            {/* Button glow effect */}
                             <div className="absolute -inset-1 rounded-xl opacity-70 group-hover:opacity-100 transition duration-500 blur-md bg-gradient-to-r from-primary-600 to-purple-600"></div>
-                            
-                            {/* Button hover state */}
                             <div className="absolute inset-0.5 rounded-[10px] opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-primary-500 to-purple-500"></div>
-                            
-                            {/* Animated shine effect */}
-                            <div className="absolute inset-0 rounded-xl overflow-hidden">
-                              <div className="absolute -inset-[100%] z-10 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 motion-safe:animate-[shimmer_2s_infinite] translate-x-[-100%]"></div>
-                            </div>
-                            
-                            {/* Button content */}
+                            <div className="absolute inset-0 rounded-xl overflow-hidden"><div className="absolute -inset-[100%] z-10 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 motion-safe:animate-[shimmer_2s_infinite] translate-x-[-100%]"></div></div>
                             <div className="relative flex items-center justify-center gap-3 text-white font-semibold text-lg">
                               {isSubmitting ? (
                                 <span className="flex items-center">
-                                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                  </svg>
+                                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                   Processing...
                                 </span>
                               ) : (
@@ -770,13 +719,12 @@ const Hero: React.FC = () => {
                               )}
                             </div>
                           </button>
-                          
-                          {/* Security message restored */}
-                          <div className="flex items-center justify-center text-xs text-gray-500">
-                            <svg className="w-4 h-4 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          {/* Updated Security message with icon and spacing */}
+                          <div className="flex items-center justify-center text-xs text-gray-500 pt-4">
+                            <svg className="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
-                            <span>Secure form • Your information is protected</span>
+                            <span>Your Data Privacy is Secured</span>
                           </div>
                         </div>
                       </div>
