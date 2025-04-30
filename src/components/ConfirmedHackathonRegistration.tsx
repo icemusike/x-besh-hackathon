@@ -120,18 +120,58 @@ const ConfirmedHackathonRegistration: React.FC = () => {
               </button>
             </div>
           ) : (
-            <div className="mt-10 p-6 bg-gradient-to-br from-primary-800/40 to-accent-800/30 rounded-2xl border border-primary-500/40 shadow-xl">
-              <h2 className="text-2xl font-semibold text-primary-300 mb-4">VIP Strategies Unlocked!</h2>
-              <p className="text-gray-200 mb-4">
-                Awesome, {participantName}! We've verified your ID. Get ready to dominate the competition.
-              </p>
-              <div className="p-4 bg-gray-900/50 rounded-lg border border-gray-700/50">
-                <p className="text-xl font-semibold text-accent-300 animate-pulse">
-                  Exclusive Content Loading...
+            // VIP Bonuses & Golden Key Strategy Section
+            <div className="mt-10 space-y-6 text-left">
+              <h2 className="text-2xl md:text-3xl font-semibold text-primary-300 text-center mb-8">VIP Strategies & Golden-Key Access Unlocked!</h2>
+              
+              {/* Enhanced VIP Bonuses Section */}
+              <div className="p-6 md:p-8 bg-gradient-to-br from-purple-800/30 via-gray-900/40 to-purple-900/30 rounded-2xl border border-purple-600/50 shadow-xl shadow-purple-900/30">
+                <h3 className="text-xl md:text-2xl font-bold text-purple-300 mb-4 flex items-center">
+                  <svg className="w-7 h-7 mr-3 text-purple-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" /></svg>
+                  ULTRA Exclusive VIP Software Bonuses
+                </h3>
+                <p className="text-gray-300 mb-4 text-base">
+                  As a valued Hackathon participant & Early-Bird partner, you get <span className="font-bold text-white">FREE access to our entire software suite</span> showcased at <a href="https://demo.xbesh.com" target="_blank" rel="noopener noreferrer" className="text-accent-400 hover:text-accent-300 underline">demo.xbesh.com</a>!
                 </p>
-                <div className="mt-4 h-2 w-full bg-gray-700 rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-primary-500 to-accent-500 animate-pulse-slow" style={{ width: '75%' }}></div>
-                </div>
+                <p className="text-gray-400 text-sm mb-4">
+                  This includes lifetime licenses for tools normally sold separately – a massive advantage for you and incredible value for your audience.
+                </p>
+                <p className="text-sm text-amber-400 bg-amber-900/30 border border-amber-700/50 rounded-lg px-4 py-3">
+                  <span className="font-bold">Reminder:</span> Access to these VIP software bonuses is <span className="font-bold">strictly limited to the first 48 hours</span> after the main product launch. Don't miss out!
+                </p>
+              </div>
+
+              {/* Golden Key Strategy Section */}
+              <div className="p-6 bg-gradient-to-br from-amber-800/20 via-gray-900/30 to-amber-900/20 rounded-2xl border border-amber-600/40 shadow-lg">
+                <h3 className="text-xl font-bold text-amber-300 mb-3 flex items-center">
+                  <svg className="w-6 h-6 mr-2 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7h1a2 2 0 012 2v1a2 2 0 01-2 2h-1m-6 4h1a2 2 0 002-2v-1a2 2 0 00-2-2H9m6 4v1a2 2 0 01-2 2H9a2 2 0 01-2-2v-1m6-4H9a2 2 0 00-2 2v1a2 2 0 002 2h6m-6 4H7a2 2 0 00-2 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 00-2-2h-1" /></svg>
+                  Golden-Key Pre-Launch Strategy
+                </h3>
+                <p className="text-gray-300 mb-4">
+                  This is your secret weapon! The Golden-Key strategy focuses on maximizing email engagement (<span className="font-semibold text-primary-300">opens & replies</span>), building intense hype and anticipation, and leveraging scarcity <span className="font-bold">before</span> the official launch even begins. Start implementing this early to get a massive head start.
+                </p>
+                <a 
+                  href="https://access.xbesh.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-2 bg-gradient-to-r from-amber-600 to-yellow-500 text-black rounded-full hover:from-amber-500 hover:to-yellow-400 transition-all duration-300 font-bold shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                >
+                  Preview the Golden-Key Strategy Now
+                  <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                </a>
+              </div>
+
+              {/* Link to Main JV Page */}
+              <div className="mt-8 text-center">
+                <a 
+                  href="https://jv.xbesh.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 bg-gray-800/70 border border-gray-700/80 rounded-full text-primary-300 hover:text-primary-200 hover:border-primary-500/50 hover:bg-primary-900/30 transition-all duration-300 font-medium shadow-sm hover:shadow-md"
+                >
+                  <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  Visit Main JV Page for More Resources
+                </a>
               </div>
             </div>
           )}

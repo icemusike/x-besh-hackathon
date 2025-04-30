@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DollarSign, Zap, Code, Briefcase, Users, Package, Terminal, Braces, Database } from 'lucide-react';
 
 const Prizes: React.FC = () => {
@@ -33,6 +33,9 @@ const Prizes: React.FC = () => {
       fadeElements.forEach(el => observer.unobserve(el));
     };
   }, []);
+
+  // State to manage video mute status
+  const [isMuted, setIsMuted] = useState(true);
 
   return (
     <section id="prizes" className="section bg-dark relative overflow-hidden">
@@ -169,6 +172,43 @@ const Prizes: React.FC = () => {
               <Database className="h-5 w-5 text-primary-400" />
             </div>
           </div>
+        </div>
+
+        {/* Placeholder for Video Demo - Replaced with Vimeo Embed */}
+        <div className="mt-16 bg-gray-900/50 rounded-2xl border border-gray-800/60 p-6 md:p-10 relative shadow-xl shadow-primary-900/20">
+          <h3 className="text-2xl md:text-3xl font-bold mb-6 text-center gradient-text">
+            See XBesh AI in Action
+          </h3>
+          
+          {/* Vimeo Embed Container */}
+          <div className="relative overflow-hidden rounded-xl shadow-lg border border-primary-500/30" style={{ paddingBottom: '56.25%' }}>
+            <iframe
+              src={`https://player.vimeo.com/video/1080176841?autoplay=1&loop=1&autopause=0&muted=${isMuted ? 1 : 0}&controls=0&background=1&quality=1080p`}
+              frameBorder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              className="absolute top-0 left-0 w-full h-full"
+              title="XBesh AI Demo"
+            ></iframe>
+            
+            {/* Unmute Button Overlay */}
+            {isMuted && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+                <button 
+                  onClick={() => setIsMuted(false)}
+                  className="flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white text-sm font-medium border border-white/30 hover:bg-white/20 transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                  </svg>
+                  Click to Unmute
+                </button>
+              </div>
+            )}
+          </div>
+          
+          {/* Optional: Add text below video */}
+          {/* <p className="text-center mt-4 text-gray-400">Watch how easily you can build and launch apps.</p> */}
         </div>
       </div>
     </section>
