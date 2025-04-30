@@ -114,9 +114,9 @@ const Hero: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // Send data to n8n webhook - Updated to send name
+      // Send data to n8n webhook - Updated to send name and use PUT method
       const response = await fetch('https://callflujent.app.n8n.cloud/webhook-test/e2649dd1-1c27-40fb-83ae-da6568e99046', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
