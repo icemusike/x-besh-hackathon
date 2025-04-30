@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import FloatingCTA from './components/FloatingCTA';
 import ConfirmedHackathonRegistration from './components/ConfirmedHackathonRegistration';
 import SubmitProject from './components/SubmitProject';
+import AffiliateShowcase from './components/AffiliateShowcase';
 
 function App() {
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
@@ -40,6 +41,7 @@ function App() {
           <Route path="/" element={
             <>
               <Hero />
+              <AffiliateShowcase />
               <About />
               <Timeline />
               <Prizes />
