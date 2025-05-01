@@ -877,3 +877,14 @@
 .animate-gradient-pulse {
   animation: gradient-pulse 3s ease-in-out infinite;
 }
+
+/* Animated Border Spin */
+@keyframes border-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-border-spin {
+  animation: border-spin 5s linear infinite;
+}

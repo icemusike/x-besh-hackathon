@@ -1,5 +1,5 @@
 import React from 'react';
-import { DollarSign, Percent, Zap, Code, Terminal, Key } from 'lucide-react';
+import { DollarSign, Percent, Zap, Code, Terminal, Key, Lightbulb, Mic, Rocket } from 'lucide-react';
 
 const About: React.FC = () => {
   const features = [
@@ -80,7 +80,40 @@ const About: React.FC = () => {
       </div>
       
       <div className="container relative z-10">
-        <div className="section-title">
+        {/* New Headline and Moved Video */}
+        <div className="mb-16 md:mb-20 text-center fade-in">
+          <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-10 flex items-center justify-center flex-wrap gap-x-4 gap-y-3">
+            <span>Dream It</span>
+            <Lightbulb className="w-8 h-8 inline-block align-middle text-yellow-400 opacity-90" />
+            <span>Tell It</span>
+            <Mic className="w-8 h-8 inline-block align-middle text-primary-400 opacity-90" />
+            <span>Build It</span>
+            <Code className="w-8 h-8 inline-block align-middle text-accent-400 opacity-90" />
+            <span>Ship it!</span>
+            <Rocket className="w-8 h-8 inline-block align-middle text-success-400 opacity-90" />
+          </h3>
+          {/* Vimeo Video Embed with Animated Border */}
+          <div className="max-w-4xl mx-auto">
+            <div className="relative p-1 rounded-xl overflow-hidden group bg-gradient-to-br from-primary-900/20 to-accent-900/10 shadow-xl">
+              {/* Animated Border Element - sits behind the video */}
+              <div className="absolute inset-0 rounded-xl motion-safe:animate-border-spin bg-[length:300%_300%] bg-gradient-to-r from-primary-500 via-accent-500 to-primary-500 -z-10 group-hover:opacity-100 opacity-70 transition-opacity duration-500"></div>
+              {/* Video container with aspect ratio and inner rounding */}
+              <div className="relative overflow-hidden rounded-lg shadow-inner" style={{ paddingBottom: '56.25%' /* 16:9 Aspect Ratio */ }}>
+                <iframe
+                  src="https://player.vimeo.com/video/1080594333?autoplay=0&loop=0&autopause=0&muted=0&controls=1&quality=1080p"
+                  frameBorder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowFullScreen
+                  className="absolute top-0 left-0 w-full h-full"
+                  title="XBesh Affiliate Hackathon Intro"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Original Section Title - adjusted margin top */}
+        <div className="section-title mt-16 md:mt-20">
           <h2 className="gradient-text">Why jump in now?</h2>
           <p className="mt-4 max-w-2xl mx-auto text-light/80">
             Get ahead of the competition and maximize your earnings with these exclusive benefits.
@@ -112,7 +145,7 @@ const About: React.FC = () => {
           ))}
         </div>
         
-        <div className="mt-20 text-center">
+        <div className="mt-16 md:mt-20 text-center">
           <a href="#hero" className="btn-outline rounded-full px-8 relative overflow-hidden group">
             <span className="relative z-10">Register Now</span>
             <span className="absolute top-0 right-full w-full h-full bg-primary-500/20 transform transition-transform duration-1000 ease-out group-hover:right-0"></span>
