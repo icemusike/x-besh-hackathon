@@ -1,5 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { DollarSign, Zap, Code, Briefcase, Users, Package, Terminal, Braces, Database } from 'lucide-react';
+import { DollarSign, Zap, Code, Briefcase, Users, Package, Terminal, Braces, Database, Check, CheckCircle, AlertCircle, Lock, Send, Link as LinkIcon, Github, Info, UploadCloud, Loader2, Image as ImageIcon } from 'lucide-react';
+import CountdownTimer from './CountdownTimer';
+
+// Define interface for terminal line
+interface TerminalLine {
+  text: string;
+  type: 'info' | 'command' | 'success' | 'final';
+  icon?: React.ElementType; // Optional icon component
+  delay: number;
+}
+
+// Define lines for the animated terminal
+const terminalLines: TerminalLine[] = [
+  { text: "Initializing xBesh AI environment...", type: 'info', delay: 100 },
+  { text: "$ xbesh --init", type: 'command', delay: 1500 },
+  { text: "Dependencies verified", type: 'success', icon: Check, delay: 1000 },
+  { text: "Loading AI models...", type: 'info', delay: 500 },
+  { text: "Checking dependencies...", type: 'info', delay: 800 },
+  { text: "$ xbesh --load-models", type: 'command', delay: 1500 },
+  { text: "Loading xBesh LLM V1.0 model...", type: 'info', delay: 1000 },
+  { text: "xBesh LLM V1.0 loaded successfully", type: 'success', icon: Check, delay: 1000 },
+  { text: "Initializing WebContainer runtime...", type: 'info', delay: 500 },
+  { text: "WebContainer runtime ready", type: 'success', icon: Check, delay: 1000 },
+  { text: "$ xbesh --prepare-environments", type: 'command', delay: 1500 },
+  { text: "Setting up frontend framework...", type: 'info', delay: 1000 },
+  { text: "Configuring database connection...", type: 'info', delay: 1200 },
+  { text: "Database connection established", type: 'success', icon: Check, delay: 800 },
+  { text: "Generating API endpoints...", type: 'info', delay: 1500 },
+  { text: "API endpoints created", type: 'success', icon: Check, delay: 1000 },
+  { text: "Packaging application...", type: 'info', delay: 1200 },
+  { text: "Build complete. Ready for deployment!", type: 'final', delay: 1000 },
+  { text: "$ xbesh --deploy --live", type: 'command', delay: 1500 },
+];
 
 const Prizes: React.FC = () => {
   const productFeatures = [
@@ -34,7 +66,51 @@ const Prizes: React.FC = () => {
     };
   }, []);
 
-  // State to manage video mute status
+  // State for animated terminal
+  const [visibleLines, setVisibleLines] = useState<number>(0);
+  const [currentProgress, setCurrentProgress] = useState<number>(0);
+  const [isLoadingFinalResult, setIsLoadingFinalResult] = useState<boolean>(false);
+  const [showFinalImage, setShowFinalImage] = useState<boolean>(false);
+  const [showPrizesConfetti, setShowPrizesConfetti] = useState<boolean>(false);
+
+  useEffect(() => {
+    let lineIndex = 0;
+    let progressInterval = 100 / terminalLines.length;
+    let timeoutId: number | undefined;
+    let finalTimeoutId: number | undefined;
+
+    const showNextLine = () => {
+      if (lineIndex < terminalLines.length) {
+        setVisibleLines(lineIndex + 1);
+        setCurrentProgress(Math.min(100, Math.round((lineIndex + 1) * progressInterval)));
+        const delay = terminalLines[lineIndex].delay;
+        lineIndex++;
+        timeoutId = window.setTimeout(showNextLine, delay);
+      } else {
+        // All lines shown, start loading animation
+        setCurrentProgress(100); // Ensure progress hits 100
+        setIsLoadingFinalResult(true);
+        finalTimeoutId = window.setTimeout(() => {
+          setIsLoadingFinalResult(false);
+          setShowFinalImage(true);
+          setShowPrizesConfetti(true); // Trigger confetti
+          // Hide confetti after a duration
+          window.setTimeout(() => setShowPrizesConfetti(false), 4000);
+        }, 1500); // Loading duration
+      }
+    };
+
+    // Start the animation
+    timeoutId = window.setTimeout(showNextLine, 500); 
+
+    // Clear timeouts on unmount
+    return () => {
+      window.clearTimeout(timeoutId);
+      window.clearTimeout(finalTimeoutId);
+    };
+  }, []);
+
+  // State for video mute status
   const [isMuted, setIsMuted] = useState(true);
 
   return (
@@ -117,59 +193,129 @@ const Prizes: React.FC = () => {
           </div>
         </div>
         
-        {/* Product Snapshot */}
+        {/* Updated Product Section */}
         <div className="mt-24 fade-in fade-in-delay-2">
-          <div className="section-title mb-12">
-            <h2 className="gradient-text">What you're promoting: XBesh AGI</h2>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">
+              Promote a Product That Sells Itself
+            </h2>
             <p className="mt-4 max-w-3xl mx-auto text-light/80">
-              The no-code SaaS builder that turns a plain English prompt into a live, hosted application in under an hour.
+              XBesh AGI is the revolutionary no-code SaaS builder turning prompts into live apps in minutes. See the build process live:
             </p>
           </div>
           
-          <div className="glass-card p-10 max-w-4xl mx-auto relative">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="flex flex-col justify-center">
-                <div className="mb-6">
-                  <Zap className="h-12 w-12 text-accent-400 mb-4" />
-                  <h3 className="text-2xl font-bold mb-3">High-Converting Offer</h3>
-                  <p className="text-light/80">
-                    A revolutionary AI-powered SaaS builder that your audience will love. Perfect for marketers, entrepreneurs, and agencies.
-                  </p>
-                </div>
-                
-                <div className="mt-6">
-                  <h4 className="text-xl font-bold mb-4 gradient-text">Complete Funnel:</h4>
-                  <ul className="space-y-4">
-                    {productFeatures.map((feature, index) => (
-                      <li key={index} className="flex items-start">
-                        <div className="flex-shrink-0 mr-3 mt-1">
-                          <div className="w-5 h-5 rounded-full bg-primary-500/20 flex items-center justify-center">
-                            <div className="w-2 h-2 rounded-full bg-primary-400"></div>
-                          </div>
-                        </div>
-                        <span className="text-light/80">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              
-              <div className="flex items-center justify-center">
-                <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-white/10 shadow-neon">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-accent-500/10"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <Code className="h-16 w-16 text-accent-400 mx-auto mb-4" />
-                      <p className="text-light/80">Product demo video will be available in your affiliate dashboard</p>
-                    </div>
-                  </div>
-                </div>
+          {/* New Grid Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            {/* Left Column: Funnel Details (Enhanced Design) */}
+            <div className="bg-gradient-to-br from-primary-900/20 via-gray-950/50 to-dark rounded-2xl p-8 border border-primary-500/40 shadow-xl shadow-primary-900/20 h-full flex flex-col">
+              <h3 className="text-2xl font-bold mb-6 text-primary-300 flex items-center border-b border-primary-700/30 pb-3">
+                 <Package className="w-7 h-7 mr-3 text-primary-400 flex-shrink-0"/> 
+                 <span>Complete <span className="text-white">High-Ticket</span> Funnel</span>
+              </h3>
+              <ul className="space-y-5 flex-grow">
+                {productFeatures.map((feature, index) => (
+                  <li key={index} className="flex items-center">
+                    <CheckCircle className="w-5 h-5 mr-3 text-accent-400 flex-shrink-0" />
+                    <span className="text-light/90 text-base">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 pt-4 border-t border-primary-700/30">
+                 <p className="text-sm text-center text-primary-400/80">Total Funnel Value: <span className="font-bold text-white">$1085</span></p>
               </div>
             </div>
-            
-            {/* Floating code elements */}
-            <div className="absolute -bottom-4 -right-4 w-10 h-10 bg-primary-500/30 rounded-lg border border-primary-400/30 flex items-center justify-center rotate-12 animate-float hidden md:flex">
-              <Database className="h-5 w-5 text-primary-400" />
+
+            {/* Right Column: Animated Terminal / Final Image */}
+            <div className="flex flex-col items-center">
+              {/* Logo and Text */}
+              <img src="/xbesh_logo_white.png" alt="XBesh Logo" className="h-12 mb-3 opacity-80" />
+              <p className="text-sm text-gray-400 mb-6 font-medium">Extensive template library included</p>
+
+              {/* Browser Window */}
+              <div className="w-full max-w-2xl rounded-xl overflow-hidden shadow-2xl border border-gray-800/50 bg-gray-950 relative">
+                {/* Header */}
+                <div className="flex items-center bg-gray-900 px-4 py-2.5 border-b border-gray-800/70">
+                   <div className="flex space-x-2 mr-4">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  </div>
+                  <div className="flex-grow text-center text-xs text-gray-500 font-medium">xBesh Terminal</div>
+                </div>
+
+                {/* Conditional Content: Terminal, Loading, or Image */}
+                <div className="p-4 md:p-5 h-80 bg-black/50 font-mono text-xs terminal-scrollbar overflow-hidden relative flex flex-col"> 
+                  {!showFinalImage && !isLoadingFinalResult && (
+                     <div className="flex-grow overflow-y-auto terminal-scrollbar pr-2">
+                       {terminalLines.slice(0, visibleLines).map((line, index) => (
+                         <div key={index} className={`terminal-line ${line.type === 'command' ? 'text-blue-300' : line.type === 'success' ? 'text-green-400' : line.type === 'final' ? 'text-yellow-300 font-bold' : 'text-gray-300'}`}>
+                           {line.type === 'success' || line.type === 'final' ? (
+                             <span className="text-green-500 mr-1.5">{line.icon && <line.icon size={12} className="inline -mt-0.5"/>}</span>
+                           ) : line.type === 'command' ? (
+                              <span className="text-gray-500 mr-1"></span> // Keep alignment for non-command lines
+                           ) : (
+                             <span className="mr-1.5">&nbsp;&nbsp;</span> // Indent info lines
+                           )}
+                           {line.text}
+                         </div>
+                       ))}
+                       {visibleLines < terminalLines.length && <span className="terminal-cursor">█</span>}
+                     </div>
+                  )}
+
+                  {isLoadingFinalResult && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-10">
+                      <Loader2 className="w-10 h-10 text-primary-400 animate-spin mb-4" />
+                      <p className="text-primary-300">Generating Final Preview...</p>
+                    </div>
+                  )}
+
+                  {showFinalImage && (
+                    <div className="absolute inset-0 image-fade-in">
+                      <img 
+                        src="https://demo.xbesh.com/images/koala-invoices-screenshot.png" 
+                        alt="Final App Screenshot" 
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                      {/* Optional: Add overlay text on image? */}
+                    </div>
+                  )}
+                 </div>
+
+                {/* Progress Bar Footer */}
+                <div className="bg-gray-800/50 px-4 py-3 border-t border-gray-700/50">
+                   <div className="flex justify-between items-center mb-1">
+                     <span className="text-xs font-medium text-gray-400">Progress</span>
+                     <span className="text-xs font-mono text-primary-300">{currentProgress}%</span>
+                   </div>
+                   <div className="h-2 w-full bg-gray-700/60 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-primary-600 to-accent-500 transition-all duration-500 ease-linear rounded-full"
+                        style={{ width: `${currentProgress}%` }}
+                      ></div>
+                    </div>
+                </div>
+
+                {/* Confetti for this section */}
+                {showPrizesConfetti && (
+                  <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+                    {Array.from({length: 50}).map((_, i) => (
+                      <div 
+                        key={i}
+                        className="absolute w-1.5 h-1.5 rounded-full"
+                        style={{
+                          backgroundColor: ['#7B61FF', '#00E5FF', '#00C48C'][Math.floor(Math.random() * 3)],
+                          left: `${Math.random() * 100}%`,
+                          top: `-10%`,
+                          animation: `confetti-fall ${3 + Math.random() * 4}s linear infinite`,
+                          animationDelay: `${Math.random() * 1}s` // Slight delay variation
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

@@ -1,30 +1,51 @@
-import React, { useEffect } from 'react';
-import { ChevronDown, ChevronUp, Terminal, Code, Braces } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ChevronDown, ChevronUp, Terminal, Code, Braces, HelpCircle } from 'lucide-react';
 import { Disclosure } from '@headlessui/react';
 
 const FAQ: React.FC = () => {
   const faqs = [
     {
-      question: "Do Early-Bird sales also count toward the main launch contest?",
-      answer: "Yes! Your numbers roll forward, so you could win twice.",
-      code: "// Early-Bird sales count twice\ncontest.earlySales.forEach(sale => {\n  mainContest.addSale(sale);\n});"
+      question: "Who is qualified to join the contest?",
+      answer: "Everyone who promotes xBesh during the pre-launch and main launch period is qualified to join the $500 Hackathon contest. Just register here!",
+      code: "isQualified = isPromoting(xBesh) && isRegistered();"
     },
     {
-      question: "What if a refund comes in after I'm declared the winner?",
-      answer: "We wait 7 days before paying the prize, just to weed out fake buys.",
-      code: "// Refund protection\nsetTimeout(payWinner, 7 * 24 * 60 * 60 * 1000);"
+      question: "Is there a minimum sales requirement?",
+      answer: "No! There is no minimum sales requirement for the Hackathon contest. Simply confirm your launch involvement by registering and getting your affiliate link.",
+      code: "// No minimum sales required for Hackathon prize\ncanWinHackathon = isRegistered();"
     },
     {
-      question: "Can I offer my own bonuses?",
-      answer: "Absolutely—go wild. Just keep it legit and FTC-compliant.",
-      code: "// Custom bonuses allowed\nconst yourBonuses = ['bonus1', 'bonus2', ...];"
+      question: "What can I create for the hackathon?",
+      answer: "Anything! A Website, Blog, Landing Page, SaaS Platform, Mobile App simulation, web tools, AI-powered tools, simple games... your imagination is the only limit. Show off what XBesh can do!",
+      code: "projectType = 'Anything Creative'; // e.g., SaaS, Website, Tool"
     },
     {
-      question: "Is there a minimum sales cap to qualify?",
-      answer: "No minimums. Even one sale could win—though that's unlikely 😉",
-      code: "// No minimum requirement\nif (sales.length > 0) eligible = true;"
+      question: "How do I join and submit my project?",
+      answer: "First, register on this page. Once your XBesh-built app or website is functional, submit its live URL via the submission page: https://hackathon.xbesh.com/submit",
+      code: "submitProject('https://hackathon.xbesh.com/submit', { liveUrl });"
+    },
+    {
+      question: "How is the Hackathon winner selected?",
+      answer: "We will host a live session where we review all submitted projects. The winner will be decided by community vote during that session.",
+      code: "winner = communityVote(submittedProjects);"
+    },
+    {
+      question: "I don't have a big list, can I still win the Hackathon?",
+      answer: "Absolutely! This contest is about creativity and building something cool with XBesh. Your list size doesn't matter here. Build it -> Show it -> Get Paid!",
+      code: "canWin = creativity && determination; // List size irrelevant"
+    },
+    {
+      question: "What about the $10,000 launch prize pool?",
+      answer: "That's a separate contest that starts when the main product launch cart opens. That competition will be based on traditional affiliate metrics like gross revenue and total sales.",
+      code: "launchContest = basedOnRevenue && totalSales; // Separate contest"
     }
   ];
+
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   // Intersection Observer for scroll animations
   useEffect(() => {
@@ -70,52 +91,37 @@ const FAQ: React.FC = () => {
       
       <div className="container relative z-10">
         <div className="section-title">
-          <h2 className="gradient-text">Need clarity?</h2>
+          <h2 className="gradient-text">Frequently Asked Questions</h2>
           <p className="mt-4 max-w-2xl mx-auto text-light/80">
-            Find answers to common questions about the XBesh Early-Bird Affiliate Contest.
+            Got questions about the hackathon? Find your answers here.
           </p>
         </div>
         
-        <div className="mt-16 max-w-3xl mx-auto">
-          <div className="space-y-6">
-            {faqs.map((faq, index) => (
-              <Disclosure key={index} as="div" className={`glass-card-hover overflow-hidden border-white/10 hover:border-primary-400/30 hover:shadow-neon-primary transition-all duration-500 relative fade-in fade-in-delay-${index + 1}`}>
-                {({ open }) => (
-                  <>
-                    <Disclosure.Button className="flex justify-between items-center w-full px-8 py-5 text-left focus:outline-none">
-                      <span className="text-lg font-medium">{faq.question}</span>
-                      {open ? (
-                        <ChevronUp className="h-5 w-5 text-accent-400" />
-                      ) : (
-                        <ChevronDown className="h-5 w-5 text-accent-400" />
-                      )}
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="px-8 pb-6">
-                      <p className="text-light/80 mb-4">{faq.answer}</p>
-                      
-                      {/* Code snippet */}
-                      <div className="p-3 bg-dark-100/50 rounded-lg border border-white/5">
-                        <div className="font-mono text-xs">
-                          {faq.code.split('\n').map((line, i) => (
-                            <div key={i} className={line.startsWith('//') ? 'text-primary-400/60' : 'text-accent-300/80'}>
-                              {line}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </Disclosure.Panel>
-                    
-                    {/* Floating decoration */}
-                    {open && (
-                      <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-accent-500/20 rounded-lg border border-accent-400/20 flex items-center justify-center rotate-12 animate-float hidden md:flex">
-                        <Code className="h-4 w-4 text-accent-400" />
-                      </div>
-                    )}
-                  </>
-                )}
-              </Disclosure>
-            ))}
-          </div>
+        <div className="max-w-3xl mx-auto">
+          {faqs.map((faq, index) => (
+            <div key={index} className="mb-4 border border-gray-800/70 rounded-xl overflow-hidden shadow-sm hover:border-primary-500/50 transition-colors duration-300">
+              <button
+                className="w-full flex justify-between items-center p-5 text-left focus:outline-none bg-gray-900/50 hover:bg-gray-800/50 transition-colors"
+                onClick={() => toggleFAQ(index)}
+              >
+                <span className="text-lg font-medium text-white">{faq.question}</span>
+                <ChevronDown 
+                  className={`w-5 h-5 text-primary-400 transform transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {openIndex === index && (
+                <div className="p-5 bg-gray-950/70 border-t border-gray-800/50">
+                  <p className="text-light/80 mb-4 text-base leading-relaxed">{faq.answer}</p>
+                  {/* Code snippet styling */}
+                  <div className="bg-black/50 p-3 rounded-md border border-gray-700/50">
+                    <pre className="font-mono text-xs text-accent-300/80 overflow-x-auto">
+                      <code>{faq.code}</code>
+                    </pre>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
         
         <div className="mt-16 text-center">

@@ -1,9 +1,15 @@
 import React from 'react';
-import Slider from 'react-slick';
+import Slider, { Settings } from 'react-slick';
 import { Star } from 'lucide-react'; // Using Star for testimonial rating/icon
 
+interface Affiliate {
+  name: string;
+  imageUrl: string;
+  testimonial: string;
+}
+
 const AffiliateShowcase: React.FC = () => {
-  const affiliates = [
+  const affiliates: Affiliate[] = [
     { name: 'Abhi Dwivedi', imageUrl: '/Abhi Dwivedi.jpg', testimonial: 'XBesh is a game-changer for rapid SaaS deployment!' },
     { name: 'Ali G', imageUrl: '/Ali G.jpg', testimonial: 'Incredible potential here. The speed is unmatched.' },
     { name: 'Firas Alameh', imageUrl: '/Firas Alameh.jpg', testimonial: 'My audience is going to love this. Easy promotion!' },
@@ -18,77 +24,86 @@ const AffiliateShowcase: React.FC = () => {
     { name: 'Todd Gross', imageUrl: '/Todd Gross.jpg', testimonial: 'XBesh is the future of no-code SaaS building.' },
   ];
 
-  const settings = {
+  const settings: Settings = {
     dots: true,
     infinite: true,
-    speed: 500,
-    slidesToShow: 4, // Show 4 on large screens
+    speed: 1500,
+    slidesToShow: 4,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
-    cssEase: "linear",
-    arrows: false, // Hide default arrows, can add custom ones if needed
+    cssEase: "cubic-bezier(0.600, -0.280, 0.735, 0.045)",
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3, // Show 3 on medium screens
+          slidesToShow: 3,
         }
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2, // Show 2 on small screens
+          slidesToShow: 2,
         }
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1, // Show 1 on extra small screens
+          slidesToShow: 1,
         }
       }
     ],
-    // Custom dots styling (optional)
-    appendDots: (dots: React.ReactNode) => (
-      <div style={{ bottom: "-40px" }}>
+    appendDots: (dots: any) => (
+      <div style={{ bottom: "-45px" }}>
         <ul style={{ margin: "0px" }}> {dots} </ul>
       </div>
     ),
     customPaging: (i: number) => (
-      <div className="w-2 h-2 rounded-full bg-gray-700 hover:bg-primary transition-colors duration-300"></div>
+      <div className="slick-dot w-2.5 h-2.5 rounded-full bg-gray-600/50 hover:bg-primary transition-colors duration-300"></div>
     )
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-dark to-gray-950/80 relative overflow-hidden">
-       {/* Subtle background elements */}
-      <div className="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-primary-900/10 to-transparent opacity-50 blur-3xl"></div>
-      <div className="absolute bottom-0 right-0 w-1/3 h-full bg-gradient-to-l from-accent-900/10 to-transparent opacity-50 blur-3xl"></div>
+    <section className="py-20 bg-gradient-to-b from-dark via-gray-950 to-dark relative overflow-hidden">
+       {/* Enhanced background elements */}
+      <div className="absolute -top-20 left-0 w-1/2 h-full bg-gradient-radial from-primary-800/15 to-transparent opacity-70 blur-3xl transform -rotate-12"></div>
+      <div className="absolute -bottom-20 right-0 w-1/2 h-full bg-gradient-radial from-accent-800/15 to-transparent opacity-70 blur-3xl transform rotate-12"></div>
       
       <div className="container relative z-10">
-        <h2 className="text-3xl font-bold text-center mb-12 gradient-text">
-          Join Top Affiliate Partners!
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 glow-text">
+          Backed by Top Affiliate Partners
         </h2>
-        <Slider {...settings}>
-          {affiliates.map((affiliate) => (
-            <div key={affiliate.name} className="px-3">
-              <div className="glass-card p-6 rounded-xl border border-gray-700/50 h-full flex flex-col items-center text-center transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-neon-primary-sm">
-                <img 
-                  src={affiliate.imageUrl} 
-                  alt={affiliate.name} 
-                  className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-gray-700/80 shadow-lg"
-                  loading="lazy"
-                />
-                <h4 className="text-lg font-semibold mb-2 text-white">{affiliate.name}</h4>
-                <div className="flex justify-center mb-3 text-yellow-400">
-                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
+        
+        {/* Carousel container with gradient fades */}
+        <div className="relative showcase-carousel-container">
+          {/* Left Fade */}
+          <div className="absolute top-0 bottom-0 left-0 w-16 md:w-24 z-10 bg-gradient-to-r from-dark via-dark/80 to-transparent pointer-events-none"></div>
+          
+          <Slider {...settings}>
+            {affiliates.map((affiliate) => (
+              <div key={affiliate.name} className="px-3 py-2">
+                <div className="bg-gray-900/60 backdrop-blur-md p-6 rounded-2xl border border-gray-700/50 h-full flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-glow-primary hover:border-primary-500/70">
+                  <img 
+                    src={affiliate.imageUrl} 
+                    alt={affiliate.name} 
+                    className="w-28 h-28 rounded-full object-cover mb-5 border-4 border-gray-800/70 shadow-lg ring-1 ring-primary-500/30"
+                    loading="lazy"
+                  />
+                  <h4 className="text-lg font-semibold mb-2 text-white tracking-wide">{affiliate.name}</h4>
+                  <div className="flex justify-center mb-4 text-yellow-400">
+                    {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}
+                  </div>
+                  <p className="text-sm text-gray-300/90 italic leading-relaxed">"{affiliate.testimonial}"</p>
                 </div>
-                <p className="text-sm text-gray-300 italic leading-relaxed">"{affiliate.testimonial}"</p>
               </div>
-            </div>
-          ))}
-        </Slider>
+            ))}
+          </Slider>
+
+          {/* Right Fade */}
+          <div className="absolute top-0 bottom-0 right-0 w-16 md:w-24 z-10 bg-gradient-to-l from-dark via-dark/80 to-transparent pointer-events-none"></div>
+        </div>
       </div>
     </section>
   );

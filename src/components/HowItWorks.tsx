@@ -1,29 +1,41 @@
 import React, { useEffect } from 'react';
-import { UserPlus, Code2, FileCheck, Presentation, Terminal, Braces, Code } from 'lucide-react';
+import { UserPlus, Code, MonitorPlay, ArrowRight } from 'lucide-react';
 
 const HowItWorks: React.FC = () => {
+
+  // Define steps data based on the image
   const steps = [
     {
-      icon: <UserPlus className="h-10 w-10 text-accent-400" />,
-      title: "1. Sign up for hackathon",
-      description: "Sign up for the hackathon and get approved with JVZoo link.",
-      code: "await jvzoo.requestApproval(affiliateId);"
+      id: 1,
+      title: 'Sign up for hackathon',
+      description: 'Sign up for the hackathon and get approved with JVZoo link.',
+      icon: UserPlus,
+      codeSnippet: [
+        'await jvzoo.requestApproval(affiliateId);',
+      ]
     },
     {
-      icon: <Code2 className="h-10 w-10 text-accent-400" />,
-      title: "2. Build your project",
-      description: "Build an amazing application or website and submit it for review.",
-      code: "const project = await buildProject();\nsubmit(project);"
+      id: 2,
+      title: 'Build your project',
+      description: 'Build an amazing application or website and submit it for review.',
+      icon: Code,
+      codeSnippet: [
+        'const project = await buildProject();',
+        'submit(project);'
+      ]
     },
     {
-      icon: <Presentation className="h-10 w-10 text-accent-400" />,
-      title: "3. Join live testing",
-      description: "Join us live when we test and vote the winner for the $500.",
-      code: "if (votes > competitors) win($500);"
+      id: 3,
+      title: 'Join live testing',
+      description: 'Join us live when we test and vote the winner for the $500.',
+      icon: MonitorPlay,
+      codeSnippet: [
+        'if (votes > competitors) win($500);'
+      ]
     }
   ];
 
-  // Intersection Observer for scroll animations
+  // Intersection Observer logic (can be copied from Prizes or another component if needed)
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -33,7 +45,7 @@ const HowItWorks: React.FC = () => {
       });
     }, { threshold: 0.1 });
 
-    const fadeElements = document.querySelectorAll('.fade-in');
+    const fadeElements = document.querySelectorAll('.how-it-works-fade-in');
     fadeElements.forEach(el => observer.observe(el));
 
     return () => {
@@ -42,102 +54,98 @@ const HowItWorks: React.FC = () => {
   }, []);
 
   return (
-    <section id="how-it-works" className="section bg-dark/50 relative overflow-hidden">
+    <section id="how-it-works" className="section bg-gradient-to-b from-gray-950/80 via-dark to-dark relative overflow-hidden pt-20 pb-24 md:pt-28 md:pb-32">
       {/* Background elements */}
-      <div className="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
-      <div className="absolute top-1/2 left-0 w-full h-1/4 bg-gradient-to-r from-primary-900/20 to-accent-900/20 blur-3xl -z-10"></div>
-      
-      {/* Code-inspired floating elements */}
-      <div className="absolute top-20 right-10 hidden lg:block fade-in">
-        <div className="glass-card p-3 border-primary-400/20 shadow-neon-primary">
-          <div className="flex items-center mb-2">
-            <Terminal className="h-4 w-4 text-accent-400 mr-2" />
-            <span className="text-light/60 text-xs">win_contest.js</span>
-          </div>
-          <div className="font-mono text-xs text-light/60">
-            <div className="typewriter text-accent-300/80">{"function"}</div>
-            <div className="typewriter typewriter-delay-1 ml-2">
-              <span className="text-primary-400">{"winContest"}</span>
-              <span className="text-light/60">{"()"}</span> <span className="text-light/60">{"{}"}</span>
-            </div>
-            <div className="typewriter typewriter-delay-2 ml-4 text-light/60">{"// Your code here"}</div>
-            <div className="typewriter typewriter-delay-3 ml-2 text-light/60">{"}"}</div>
-          </div>
-        </div>
-      </div>
-      
-      <div className="absolute bottom-20 left-10 hidden lg:block fade-in fade-in-delay-2">
-        <div className="glass-card p-3 border-accent-400/20 shadow-neon-accent">
-          <div className="flex items-center mb-2">
-            <Code className="h-4 w-4 text-primary-400 mr-2" />
-            <span className="text-light/60 text-xs">prize.js</span>
-          </div>
-          <div className="font-mono text-xs">
-            <div className="typewriter text-accent-300/80">{"const"}</div>
-            <div className="typewriter typewriter-delay-1 ml-2">
-              <span className="text-primary-400">{"prize"}</span>
-              <span className="text-accent-300/80">{" = "}</span>
-              <span className="text-success-400">{"'$500'"}</span>;
-            </div>
-          </div>
-        </div>
-      </div>
-      
+      <div className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-primary-900/10 to-transparent blur-3xl"></div>
+      <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-accent-900/10 to-transparent blur-3xl"></div>
+
       <div className="container relative z-10">
-        <div className="section-title">
-          <h2 className="gradient-text">How to win the $500</h2>
-          <p className="mt-4 max-w-2xl mx-auto text-light/80">
+        {/* Section Header */}
+        <div className="section-title mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 glow-text-strong">
+            How to win the <span className="gradient-text">$500</span>
+          </h2>
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
             Follow these simple steps to compete for the $500 cash prize in the Early-Bird Affiliate Contest.
           </p>
         </div>
-        
-        <div className="relative mt-20 max-w-5xl mx-auto">
-          {/* Steps */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-            {/* Connector Line (Desktop) - Positioned BEHIND the cards */}
-            <div className="hidden md:block absolute top-24 left-0 w-full h-1 bg-gradient-to-r from-primary-500 to-accent-500 rounded-full shadow-neon"></div>
-            
+
+        {/* Steps Visualization */}
+        <div className="relative mb-20 md:mb-24">
+          {/* Connecting Line - Lower z-index */}
+          <div className="absolute top-6 left-1/4 right-1/4 h-1.5 -translate-y-1/2 bg-gradient-to-r from-primary-700/30 via-accent-600/30 to-primary-700/30 rounded-full hidden md:block animate-gradient-pulse z-10"></div>
+          
+          {/* Step Number Indicators - Higher z-index */}
+          <div className="hidden md:flex justify-between items-center w-full absolute top-6 left-0 right-0 px-[12.5%] z-20" style={{ transform: 'translateY(-50%)' }}>
+            {steps.map((step) => (
+              <div key={`indicator-${step.id}`} className="relative">
+                <div className="w-12 h-12 rounded-full bg-gray-900 border-2 border-primary-600 shadow-lg flex items-center justify-center text-primary-300 font-bold text-xl">
+                  {step.id}
+                </div>
+                <div className="absolute inset-0 rounded-full border-2 border-primary-500/50 animate-ping-slow opacity-50"></div>
+              </div>
+            ))}
+          </div>
+          
+          {/* Cards Grid (Increase top margin slightly) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative z-10 mt-20 md:mt-28">
             {steps.map((step, index) => (
-              <div key={index} className="relative flex flex-col items-center text-center fade-in fade-in-delay-1">
-                {/* Step Number (Desktop) */}
-                <div className="hidden md:flex absolute -top-6 left-1/2 transform -translate-x-1/2 items-center justify-center w-12 h-12 rounded-full bg-dark-100/80 border-2 border-primary-400 text-primary-400 font-bold text-lg z-10 shadow-neon-primary">
-                  {index + 1}
+              <div 
+                key={step.id} 
+                className={`how-it-works-fade-in fade-in-delay-${index + 1} pt-10 bg-gray-900/70 backdrop-blur-lg rounded-2xl border border-gray-700/60 shadow-lg hover:border-primary-500/50 transition-all duration-300 flex flex-col overflow-hidden hover:shadow-neon-primary-sm relative`} 
+              >
+                {/* Mobile Step Number */}
+                <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-primary-600 to-accent-600 flex items-center justify-center text-white font-bold text-sm border border-gray-800 shadow-md md:hidden">
+                  {step.id}
                 </div>
                 
-                {/* Step Content */}
-                <div className="glass-card-hover p-8 w-full h-full border-white/10 hover:border-primary-400/30 hover:shadow-neon-primary transition-all duration-500 z-20 bg-dark-50/30">
-                  <div className="icon-circle-lg mb-6 mx-auto bg-gradient-to-br from-dark-100/50 to-dark-200/50">
-                    {step.icon}
+                <div className="p-6 flex flex-col items-center text-center flex-grow pt-4 md:pt-6">
+                  <step.icon className="w-12 h-12 text-primary-400 mb-4" strokeWidth={1.5} />
+                  <h3 className="text-xl font-semibold mb-3 text-white">{step.title}</h3>
+                  <p className="text-gray-400 text-sm mb-5 flex-grow">{step.description}</p>
+                </div>
+
+                {/* Code Snippet Area */}
+                <div className="bg-black/40 px-5 py-4 mt-auto border-t border-gray-700/50 font-mono text-xs text-left relative overflow-hidden">
+                  {/* Floating Brace */}
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 text-accent-500/40 opacity-70">
+                    {`{}`}
                   </div>
-                  <h3 className="text-xl font-bold mb-4">{step.title}</h3>
-                  <p className="text-light/80 mb-6">{step.description}</p>
-                  
-                  {/* Code snippet */}
-                  <div className="mt-auto pt-4 border-t border-white/10">
-                    <div className="font-mono text-xs text-accent-400/70 flex justify-center">
-                      <code>{step.code}</code>
+                  {step.codeSnippet.map((line, lineIndex) => (
+                    <div key={lineIndex} className="whitespace-pre overflow-x-auto text-gray-400 leading-relaxed">
+                      {/* Basic syntax highlighting simulation */}
+                      {line.includes('await') && <span className="text-purple-400">await </span>}
+                      {line.includes('const') && <span className="text-purple-400">const </span>}
+                      {line.replace(/await |const |if |win|submit|buildProject|requestApproval|\(|\)|;|\[|\]/g, '').split(' ').map((word, wi) => {
+                         if ([ 'project', 'affiliateId', 'votes', 'competitors' ].includes(word)) return <span key={wi} className="text-primary-300">{word} </span>
+                         if ([ '=', '===', '>', '$500' ].includes(word)) return <span key={wi} className="text-white">{word} </span>
+                         return <span key={wi}>{word} </span>
+                      })}
+                      {/* Add back special characters */}
+                      {line.includes('(') && <span className="text-gray-500">(</span>}
+                      {line.includes(')') && <span className="text-gray-500">)</span>}
+                      {line.includes(';') && <span className="text-gray-500">;</span>}
                     </div>
-                  </div>
-                </div>
-                
-                {/* Floating decoration */}
-                <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-accent-500/20 rounded-lg border border-accent-400/20 flex items-center justify-center rotate-12 animate-float hidden md:flex" style={{ animationDelay: `${index * 0.5}s` }}>
-                  <Braces className="h-4 w-4 text-accent-400" />
+                  ))}
                 </div>
               </div>
             ))}
           </div>
         </div>
-        
-        <div className="mt-16 text-center">
-          <a href="#hero" className="btn-primary rounded-full px-8 py-4 shadow-neon-primary">
+
+        {/* Register Button */} 
+        <div className="text-center mt-16 mb-8 fade-in how-it-works-fade-in">
+          <a href="#hero" className="btn-primary px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-neon-primary transition-shadow">
             Register Now
+            <ArrowRight className="w-5 h-5 ml-2 inline-block" />
           </a>
         </div>
-        
-        <div className="mt-10 text-center">
-          <p className="text-light/70 italic font-mono text-sm">// Tie-breaker = total gross revenue;</p>
-        </div>
+
+        {/* Tie Breaker Note */}
+        <p className="text-center text-sm text-gray-500 font-mono fade-in how-it-works-fade-in">
+          // Tie-breaker = total gross revenue;
+        </p>
+
       </div>
     </section>
   );
