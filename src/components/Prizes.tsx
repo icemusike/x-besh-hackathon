@@ -351,13 +351,13 @@ const Prizes: React.FC = () => {
           </div>
         </div>
 
-        {/* Placeholder for Video Demo - Replaced with Vimeo Embed */}
+        {/* Placeholder for Video Demo - REMOVED SECTION */}
+        {/* 
         <div className="mt-16 bg-gray-900/50 rounded-2xl border border-gray-800/60 p-6 md:p-10 relative shadow-xl shadow-primary-900/20">
           <h3 className="text-2xl md:text-3xl font-bold mb-6 text-center gradient-text">
             See XBesh AI in Action
           </h3>
           
-          {/* Vimeo Embed Container */}
           <div className="relative overflow-hidden rounded-xl shadow-lg border border-primary-500/30" style={{ paddingBottom: '56.25%' }}>
             <iframe
               src={`https://player.vimeo.com/video/1080176841?autoplay=1&loop=1&autopause=0&muted=${isMuted ? 1 : 0}&controls=0&background=1&quality=1080p`}
@@ -368,7 +368,6 @@ const Prizes: React.FC = () => {
               title="XBesh AI Demo"
             ></iframe>
             
-            {/* Unmute Button Overlay */}
             {isMuted && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/40">
                 <button 
@@ -384,9 +383,8 @@ const Prizes: React.FC = () => {
             )}
           </div>
           
-          {/* Optional: Add text below video */}
-          {/* <p className="text-center mt-4 text-gray-400">Watch how easily you can build and launch apps.</p> */}
         </div>
+         */}
       </div>
     </section>
   );
