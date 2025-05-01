@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { DollarSign, Zap, Code, Briefcase, Users, Package, Terminal, Braces, Database, Check, CheckCircle, AlertCircle, Lock, Send, Link as LinkIcon, Github, Info, UploadCloud, Loader2, Image as ImageIcon } from 'lucide-react';
 import CountdownTimer from './CountdownTimer';
 
@@ -48,7 +48,42 @@ const Prizes: React.FC = () => {
   const codeSnippet2 = "const winner = affiliates.find(a => a.sales === Math.max(...affiliates.map(a => a.sales)));";
   const codeSnippet3 = "await payPrize(winner, '$500');";
 
-  // Intersection Observer for scroll animations
+  // State for animated terminal
+  const [visibleLines, setVisibleLines] = useState<number>(0);
+  const [currentProgress, setCurrentProgress] = useState<number>(0);
+  const [isLoadingFinalResult, setIsLoadingFinalResult] = useState<boolean>(false);
+  const [showFinalImage, setShowFinalImage] = useState<boolean>(false);
+  const [showPrizesConfetti, setShowPrizesConfetti] = useState<boolean>(false);
+  const [isTerminalVisible, setIsTerminalVisible] = useState<boolean>(false);
+  const terminalRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer for the terminal animation
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsTerminalVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+
+    const currentTerminalRef = terminalRef.current;
+    if (currentTerminalRef) {
+      observer.observe(currentTerminalRef);
+    }
+
+    return () => {
+      if (currentTerminalRef) {
+        observer.unobserve(currentTerminalRef);
+      }
+    };
+  }, []);
+
+  // Original Intersection Observer for other fade-in elements (kept separate)
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -66,14 +101,10 @@ const Prizes: React.FC = () => {
     };
   }, []);
 
-  // State for animated terminal
-  const [visibleLines, setVisibleLines] = useState<number>(0);
-  const [currentProgress, setCurrentProgress] = useState<number>(0);
-  const [isLoadingFinalResult, setIsLoadingFinalResult] = useState<boolean>(false);
-  const [showFinalImage, setShowFinalImage] = useState<boolean>(false);
-  const [showPrizesConfetti, setShowPrizesConfetti] = useState<boolean>(false);
-
+  // useEffect for terminal animation logic
   useEffect(() => {
+    if (!isTerminalVisible) return;
+
     let lineIndex = 0;
     let progressInterval = 100 / terminalLines.length;
     let timeoutId: number | undefined;
@@ -100,15 +131,15 @@ const Prizes: React.FC = () => {
       }
     };
 
-    // Start the animation
-    timeoutId = window.setTimeout(showNextLine, 500); 
+    // Start the animation only when visible
+    timeoutId = window.setTimeout(showNextLine, 500);
 
-    // Clear timeouts on unmount
+    // Clear timeouts on unmount or if visibility changes (though it shouldn't change back)
     return () => {
       window.clearTimeout(timeoutId);
       window.clearTimeout(finalTimeoutId);
     };
-  }, []);
+  }, [isTerminalVisible]);
 
   // State for video mute status
   const [isMuted, setIsMuted] = useState(true);
@@ -232,7 +263,7 @@ const Prizes: React.FC = () => {
               <p className="text-sm text-gray-400 mb-6 font-medium">Extensive template library included</p>
 
               {/* Browser Window */}
-              <div className="w-full max-w-2xl rounded-xl overflow-hidden shadow-2xl border border-gray-800/50 bg-gray-950 relative">
+              <div ref={terminalRef} className="w-full max-w-2xl rounded-xl overflow-hidden shadow-2xl border border-gray-800/50 bg-gray-950 relative">
                 {/* Header */}
                 <div className="flex items-center bg-gray-900 px-4 py-2.5 border-b border-gray-800/70">
                    <div className="flex space-x-2 mr-4">

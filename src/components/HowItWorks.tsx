@@ -72,41 +72,28 @@ const HowItWorks: React.FC = () => {
 
         {/* Steps Visualization */}
         <div className="relative mb-20 md:mb-24">
-          {/* Connecting Line - Lower z-index */}
-          <div className="absolute top-6 left-1/4 right-1/4 h-1.5 -translate-y-1/2 bg-gradient-to-r from-primary-700/30 via-accent-600/30 to-primary-700/30 rounded-full hidden md:block animate-gradient-pulse z-10"></div>
-          
-          {/* Step Number Indicators - Higher z-index */}
-          <div className="hidden md:flex justify-between items-center w-full absolute top-6 left-0 right-0 px-[12.5%] z-20" style={{ transform: 'translateY(-50%)' }}>
-            {steps.map((step) => (
-              <div key={`indicator-${step.id}`} className="relative">
-                <div className="w-12 h-12 rounded-full bg-gray-900 border-2 border-primary-600 shadow-lg flex items-center justify-center text-primary-300 font-bold text-xl">
-                  {step.id}
-                </div>
-                <div className="absolute inset-0 rounded-full border-2 border-primary-500/50 animate-ping-slow opacity-50"></div>
-              </div>
-            ))}
-          </div>
-          
-          {/* Cards Grid (Increase top margin slightly) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative z-10 mt-20 md:mt-28">
+          {/* Cards Grid (Adjusted top margin) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative z-10 mt-12 md:mt-16">
             {steps.map((step, index) => (
               <div 
                 key={step.id} 
-                className={`how-it-works-fade-in fade-in-delay-${index + 1} pt-10 bg-gray-900/70 backdrop-blur-lg rounded-2xl border border-gray-700/60 shadow-lg hover:border-primary-500/50 transition-all duration-300 flex flex-col overflow-hidden hover:shadow-neon-primary-sm relative`} 
+                className={`how-it-works-fade-in fade-in-delay-${index + 1} pt-12 bg-gray-900/70 backdrop-blur-lg rounded-2xl border border-gray-700/60 shadow-lg hover:border-primary-500/50 transition-all duration-300 flex flex-col overflow-visible hover:shadow-neon-primary-sm relative`}
               >
-                {/* Mobile Step Number */}
-                <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-gradient-to-br from-primary-600 to-accent-600 flex items-center justify-center text-white font-bold text-sm border border-gray-800 shadow-md md:hidden">
-                  {step.id}
+                {/* Enhanced Step Number Pill (Visible on all sizes, centered on top) */}
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary-600 to-accent-500 flex items-center justify-center text-white font-bold text-xl border-2 border-gray-950 shadow-lg">
+                    {step.id}
+                  </div>
                 </div>
                 
-                <div className="p-6 flex flex-col items-center text-center flex-grow pt-4 md:pt-6">
+                <div className="p-6 flex flex-col items-center text-center flex-grow pt-6 md:pt-8">
                   <step.icon className="w-12 h-12 text-primary-400 mb-4" strokeWidth={1.5} />
                   <h3 className="text-xl font-semibold mb-3 text-white">{step.title}</h3>
                   <p className="text-gray-400 text-sm mb-5 flex-grow">{step.description}</p>
                 </div>
 
                 {/* Code Snippet Area */}
-                <div className="bg-black/40 px-5 py-4 mt-auto border-t border-gray-700/50 font-mono text-xs text-left relative overflow-hidden">
+                <div className="bg-black/40 px-5 py-4 mt-auto border-t border-gray-700/50 font-mono text-xs text-left relative overflow-hidden rounded-b-2xl">
                   {/* Floating Brace */}
                   <div className="absolute -bottom-2 -right-2 w-8 h-8 text-accent-500/40 opacity-70">
                     {`{}`}

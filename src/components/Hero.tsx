@@ -568,7 +568,7 @@ const Hero: React.FC = () => {
               </div>
               
               {/* Enhanced Registration Form - IMPROVED TO MATCH BROWSER WINDOW STYLE */}
-              <div className="rounded-xl overflow-hidden shadow-glow-form border-2 border-gray-700/80 bg-gray-950 flex flex-col backdrop-blur-sm" style={{ maxHeight: "560px" }}>
+              <div className="rounded-xl overflow-hidden shadow-glow-form border-2 border-gray-700/80 bg-gray-950 flex flex-col backdrop-blur-sm">
                 {/* Browser-like header to match the left side - Conditional Badge */}
                 <div className="flex items-center bg-gray-900 px-4 py-3 border-b border-gray-800/70">
                   <div className="flex space-x-2 mr-4">
@@ -639,12 +639,10 @@ const Hero: React.FC = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="bg-gradient-to-b from-gray-900 to-gray-950 flex flex-col h-full">
+                  <div className="bg-gradient-to-b from-gray-900 to-gray-950 flex flex-col h-full min-h-[500px]">
                     {/* Form Body */}
-                    <form onSubmit={handleSubmit} className="p-6 flex-grow">
-                      {/* ... ALL the form content from before goes here ... */}
-                      {/* Name Input, Email Input, Scarcity Card, Error Message, Button, Security Text */} 
-                      <div className="space-y-6 h-full flex flex-col">
+                    <form onSubmit={handleSubmit} className="p-6 flex flex-col flex-grow">
+                      <div className="space-y-6 flex flex-col flex-grow">
                         {/* Name Input */}  
                         <div className="space-y-2">
                           <label htmlFor="name" className="flex items-center text-sm font-medium text-gray-300">Your Name <span className="text-pink-500 ml-1">*</span><span className="ml-auto text-xs text-gray-500 bg-gray-800/50 px-2 py-0.5 rounded">Required</span></label>
@@ -697,9 +695,13 @@ const Hero: React.FC = () => {
                             <p className="text-sm text-pink-300">{errorMessage}</p>
                           </div>
                         )}
-                        {/* Submit Button & Security Text */}  
-                        <div className="pt-4 mt-auto space-y-4">
-                          <button type="submit" disabled={isSubmitting} className="relative w-full py-4 px-6 rounded-xl overflow-hidden group">
+                        {/* Submit Button Area (Adjusted spacing) */}
+                        <div className="mt-auto pt-4 sm:pt-6 space-y-3">
+                          <button
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="relative w-full py-4 px-6 rounded-xl overflow-hidden group"
+                          >
                             <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-purple-600 rounded-xl"></div>
                             <div className="absolute -inset-1 rounded-xl opacity-70 group-hover:opacity-100 transition duration-500 blur-md bg-gradient-to-r from-primary-600 to-purple-600"></div>
                             <div className="absolute inset-0.5 rounded-[10px] opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-primary-500 to-purple-500"></div>
@@ -719,8 +721,9 @@ const Hero: React.FC = () => {
                               )}
                             </div>
                           </button>
-                          {/* Updated Security message with icon and spacing */}
-                          <div className="flex items-center justify-center text-xs text-gray-500 pt-4">
+                          
+                          {/* Security message */}
+                          <div className="flex items-center justify-center text-xs text-gray-500 pt-1 sm:pt-2 pb-1">
                             <svg className="w-4 h-4 mr-1.5 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>

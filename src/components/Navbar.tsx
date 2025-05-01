@@ -16,6 +16,7 @@ const Navbar: React.FC = () => {
     { name: 'Product', href: '#prizes' },
     { name: 'Resources', href: '#resources' },
     { name: 'FAQ', href: '#faq' },
+    { name: 'Affiliate Resources', href: 'https://jv.xbesh.com', external: true },
   ];
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const Navbar: React.FC = () => {
                 <a 
                   href={link.href} 
                   className="text-light/80 hover:text-accent-400 transition-colors duration-300 font-medium"
+                  {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                 >
                   {link.name}
                 </a>
@@ -81,6 +83,7 @@ const Navbar: React.FC = () => {
                     href={link.href} 
                     className="block py-2 text-light/80 hover:text-accent-400 transition-colors duration-300"
                     onClick={() => setIsOpen(false)}
+                    {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                   >
                     {link.name}
                   </a>
