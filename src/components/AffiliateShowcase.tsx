@@ -23,6 +23,7 @@ const AffiliateShowcase: React.FC = () => {
     { name: 'Stoica Bogdan', imageUrl: '/Stoica Bogdan.jpg', testimonial: "Don't miss this launch – it's going to be massive." },
     { name: 'Tim Verdouw', imageUrl: '/Tim Verdouw.jpg', testimonial: 'Excited to see the results from this hackathon!' },
     { name: 'Todd Gross', imageUrl: '/Todd Gross.jpg', testimonial: 'XBesh is the future of no-code SaaS building.' },
+    { name: 'You?', imageUrl: 'placeholder', testimonial: 'Your success story could be next! Join the Hackathon!' },
   ];
 
   const settings: Settings = {
@@ -86,12 +87,24 @@ const AffiliateShowcase: React.FC = () => {
             {affiliates.map((affiliate) => (
               <div key={affiliate.name} className="px-3 py-2">
                 <div className="bg-gray-900/60 backdrop-blur-md p-6 rounded-2xl border border-gray-700/50 h-full flex flex-col items-center text-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-glow-primary hover:border-primary-500/70">
-                  <img 
-                    src={affiliate.imageUrl} 
-                    alt={affiliate.name} 
-                    className="w-28 h-28 rounded-full object-cover mb-5 border-4 border-gray-800/70 shadow-lg ring-1 ring-primary-500/30"
-                    loading="lazy"
-                  />
+                  {affiliate.imageUrl === 'placeholder' ? (
+                    // Placeholder SVG
+                    <div className="w-28 h-28 rounded-full mb-5 border-4 border-dashed border-gray-700/70 shadow-lg ring-1 ring-primary-500/30 bg-gray-800/50 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600/80 opacity-70">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                      </svg>
+                    </div>
+                  ) : (
+                    // Regular Image
+                    <img 
+                      src={affiliate.imageUrl} 
+                      alt={affiliate.name} 
+                      className="w-28 h-28 rounded-full object-cover mb-5 border-4 border-gray-800/70 shadow-lg ring-1 ring-primary-500/30"
+                      loading="lazy"
+                    />
+                  )}
                   <h4 className="text-lg font-semibold mb-2 text-white tracking-wide">{affiliate.name}</h4>
                   <div className="flex justify-center mb-4 text-yellow-400">
                     {[...Array(5)].map((_, i) => <Star key={i} size={18} fill="currentColor" />)}
