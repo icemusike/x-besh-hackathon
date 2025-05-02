@@ -10,13 +10,14 @@ interface Affiliate {
 
 const AffiliateShowcase: React.FC = () => {
   const affiliates: Affiliate[] = [
-    { name: 'Abhi Dwivedi', imageUrl: '/Abhi Dwivedi.jpg', testimonial: 'XBesh is a game-changer for rapid SaaS deployment!' },
+    // { name: 'Abhi Dwivedi', imageUrl: '/Abhi Dwivedi.jpg', testimonial: 'XBesh is a game-changer for rapid SaaS deployment!' },
     { name: 'Ali G', imageUrl: '/Ali G.jpg', testimonial: 'Incredible potential here. The speed is unmatched.' },
+    { name: 'Cindy Donavan', imageUrl: '/cindy_donavan.jpg', testimonial: 'Excited to promote XBesh to my audience!' },
     { name: 'Firas Alameh', imageUrl: '/Firas Alameh.jpg', testimonial: 'My audience is going to love this. Easy promotion!' },
-    { name: 'Luke Maguire', imageUrl: '/Luke Maguire.jpg', testimonial: 'Finally, AI software building made simple.' },
+    // { name: 'Luke Maguire', imageUrl: '/Luke Maguire.jpg', testimonial: 'Finally, AI software building made simple.' },
     { name: 'Mark Thompson', imageUrl: '/Mark Thompson.jpg', testimonial: 'This pre-launch is heating up! Huge opportunity.' },
     { name: 'Mike From Maine', imageUrl: '/Mike From Maine.jpg', testimonial: 'Jump on this hackathon – $500 is just the start.' },
-    { name: 'Neil Napier', imageUrl: '/Neil Napier.jpg', testimonial: 'XBesh delivers on the promise of AI-driven app creation.' },
+    // { name: 'Neil Napier', imageUrl: '/Neil Napier.jpg', testimonial: 'XBesh delivers on the promise of AI-driven app creation.' },
     { name: 'Ryan Phillips', imageUrl: '/Ryan Phillips.jpg', testimonial: 'Highly recommend getting involved early.' },
     { name: 'Steve Hasse', imageUrl: '/Steve Hasse.jpg', testimonial: 'The Golden-Key strategy is pure genius for affiliates.' },
     { name: 'Stoica Bogdan', imageUrl: '/Stoica Bogdan.jpg', testimonial: "Don't miss this launch – it's going to be massive." },
