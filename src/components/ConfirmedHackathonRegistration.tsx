@@ -173,6 +173,31 @@ const ConfirmedHackathonRegistration: React.FC = () => {
                 <p className="text-gray-300 mb-4">
                   This is your secret weapon! The Golden-Key strategy focuses on maximizing email engagement (<span className="font-semibold text-primary-300">opens & replies</span>), building intense hype and anticipation, and leveraging scarcity <span className="font-bold">before</span> the official launch even begins. Start implementing this early to get a massive head start.
                 </p>
+                <div className="text-gray-300 mb-4 p-4 bg-gray-800/50 rounded-xl border border-amber-600/30">
+                  <p className="font-medium mb-2"><span className="text-amber-400">⭐ IMPORTANT:</span> You can claim your 5 Golden Keys by:</p>
+                  <ul className="list-disc list-inside space-y-2 text-sm">
+                    <li>Reaching out to us on <span className="text-primary-300 font-semibold">Skype</span></li>
+                    <li>Contacting us via <span className="text-primary-300 font-semibold">Microsoft Teams</span></li>
+                    <li>Emailing us at <a href="mailto:support@xbesh.com" className="text-accent-400 hover:text-accent-300 underline">support@xbesh.com</a></li>
+                  </ul>
+                </div>
+                
+                {/* Link to detailed affiliate strategies page */}
+                <div className="mb-4 flex items-center justify-between">
+                  <a 
+                    href="/affiliate-strategies" 
+                    className="group inline-flex items-center text-primary-400 hover:text-primary-300 px-4 py-2 bg-gray-800/60 hover:bg-gray-800/80 border border-gray-700/50 hover:border-primary-500/30 rounded-lg transition-all duration-300"
+                  >
+                    <svg className="w-5 h-5 mr-2 text-primary-400 group-hover:text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m-6-8h6M9 20h6M4 4h16a1 1 0 011 1v14a1 1 0 01-1 1H4a1 1 0 01-1-1V5a1 1 0 011-1z" />
+                    </svg>
+                    <span>View Detailed Golden-Key Giveaway Strategy</span>
+                    <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+                
                 <a 
                   href="https://access.xbesh.com" 
                   target="_blank" 

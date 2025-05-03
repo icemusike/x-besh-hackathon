@@ -16,6 +16,7 @@ import SubmitProject from './components/SubmitProject';
 import AffiliateShowcase from './components/AffiliateShowcase';
 import WebinarRegistration from './pages/WebinarRegistration';
 import WebinarConfirmation from './pages/WebinarConfirmation';
+import AffiliateStrategies from './pages/AffiliateStrategies';
 
 function App() {
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
@@ -57,6 +58,7 @@ function App() {
           <Route path="/submit" element={<SubmitProject />} />
           <Route path="/webinar-registration" element={<WebinarRegistration />} />
           <Route path="/webinar-confirmation" element={<WebinarConfirmation />} />
+          <Route path="/affiliate-strategies" element={<AffiliateStrategies />} />
         </Routes>
       </main>
       <Footer />
