@@ -11,9 +11,30 @@ const ConfirmedHackathonRegistration: React.FC = () => {
   const [isSubmittingJvzooId, setIsSubmittingJvzooId] = useState(false);
   const [jvzooSubmitError, setJvzooSubmitError] = useState<string | null>(null);
 
+  const handleJvzooIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow only digits
+    if (/^\d*$/.test(value)) {
+      setJvzooId(value);
+      // Clear error if user starts typing valid input
+      if (jvzooSubmitError) {
+        setJvzooSubmitError(null);
+      }
+    }
+  };
+
   const handleUnlockStrategies = async () => {
-    if (jvzooId.trim().length < 6) {
-      setJvzooSubmitError('Please enter a valid JVZoo Affiliate ID (at least 6 characters).');
+    const trimmedId = jvzooId.trim();
+    
+    // Check if empty
+    if (trimmedId === '') {
+       setJvzooSubmitError('Please enter your JVZoo Affiliate ID.');
+       return;
+    }
+
+    // Check if it contains only numbers (this should be redundant due to onChange handler, but good practice)
+    if (!/^\d+$/.test(trimmedId)) { 
+      setJvzooSubmitError('JVZoo Affiliate ID must contain only numbers.');
       return;
     }
     
@@ -29,7 +50,7 @@ const ConfirmedHackathonRegistration: React.FC = () => {
         body: JSON.stringify({
           name: participantName,
           email: participantEmail,
-          jvzooId: jvzooId,
+          jvzooId: trimmedId,
           source: 'XBesh Affiliate Confirmation Page'
         }),
       });
@@ -43,7 +64,7 @@ const ConfirmedHackathonRegistration: React.FC = () => {
         throw new Error(`Network response was not ok: ${response.statusText}`);
       }
 
-      console.log('JVZoo ID submitted successfully:', jvzooId);
+      console.log('JVZoo ID submitted successfully:', trimmedId);
       setIsStrategiesUnlocked(true);
 
     } catch (error) {
@@ -86,11 +107,13 @@ const ConfirmedHackathonRegistration: React.FC = () => {
                   <div className="relative">
                     <input
                       type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       id="jvzooId"
                       value={jvzooId}
-                      onChange={(e) => setJvzooId(e.target.value)}
+                      onChange={handleJvzooIdChange}
                       className="w-full px-4 py-3 bg-gray-800/90 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300 text-white placeholder-gray-500 shadow-inner text-center font-mono tracking-wider"
-                      placeholder="Enter your JVZoo ID"
+                      placeholder="Enter your JVZoo ID (Numbers Only)"
                     />
                   </div>
                 </div>
