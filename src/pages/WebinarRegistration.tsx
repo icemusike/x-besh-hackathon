@@ -162,8 +162,8 @@ const RegistrationForm = () => {
         setCountdown(prev => {
           if (prev <= 1) {
             clearInterval(timer);
-            // Redirect to confirmation page
-            window.location.href = 'https://access.xbesh.com/webinar-confirmation.html';
+            // Redirect to our internal confirmation page with name parameter
+            window.location.href = `/webinar-confirmation?name=${encodeURIComponent(name)}`;
             return 0;
           }
           return prev - 1;
@@ -174,7 +174,7 @@ const RegistrationForm = () => {
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [formStatus]);
+  }, [formStatus, name]);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

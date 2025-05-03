@@ -15,6 +15,7 @@ import ConfirmedHackathonRegistration from './components/ConfirmedHackathonRegis
 import SubmitProject from './components/SubmitProject';
 import AffiliateShowcase from './components/AffiliateShowcase';
 import WebinarRegistration from './pages/WebinarRegistration';
+import WebinarConfirmation from './pages/WebinarConfirmation';
 
 function App() {
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
@@ -55,6 +56,7 @@ function App() {
           <Route path="/confirmed-hackathon-registration" element={<ConfirmedHackathonRegistration />} />
           <Route path="/submit" element={<SubmitProject />} />
           <Route path="/webinar-registration" element={<WebinarRegistration />} />
+          <Route path="/webinar-confirmation" element={<WebinarConfirmation />} />
         </Routes>
       </main>
       <Footer />
