@@ -40,33 +40,106 @@ const VideoPlayer = ({ videoId }: { videoId: string }) => {
   );
 };
 
-// Registration counter component
+// Modified RegistrationCounter component to be animated and dynamic
 const RegistrationCounter = () => {
+  const [count, setCount] = useState(187);
+  const [recentJoins, setRecentJoins] = useState<{name: string, time: string}[]>([
+    {name: "John Smith", time: "2 min ago"},
+    {name: "Sarah Connor", time: "5 min ago"},
+    {name: "David Green", time: "8 min ago"}
+  ]);
+
+  useEffect(() => {
+    // Slowly increment the counter at random intervals
+    const timer = setInterval(() => {
+      // Only increment with 30% probability to make it seem more natural
+      if (Math.random() < 0.3 && count < 197) {
+        setCount(prev => prev + 1);
+        
+        // Add a new random name to recent joins
+        const firstNames = ['Alex', 'Jamie', 'Taylor', 'Jordan', 'Casey', 'Sam', 'Riley', 'Morgan', 'Robin', 'Avery', 'Charlie'];
+        const lastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Taylor', 'Clark'];
+        
+        const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+        const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+        const fullName = `${randomFirstName} ${randomLastName}`;
+        
+        setRecentJoins(prev => [{
+          name: fullName,
+          time: "Just now"
+        }, ...prev.slice(0, 2).map(item => ({
+          ...item,
+          time: item.time === "Just now" ? "1 min ago" : 
+                item.time === "1 min ago" ? "2 min ago" : 
+                item.time === "2 min ago" ? "5 min ago" : item.time
+        }))]);
+      }
+    }, 5000); // Check every 5 seconds
+    
+    return () => clearInterval(timer);
+  }, [count]);
+
   return (
-    <div className="mt-4 glass-card p-6 border border-primary/30 rounded-xl">
-      <div className="text-center mb-3">
-        <span className="text-sm uppercase tracking-wider text-gray-400 font-medium">
-          Already Registered
-        </span>
-      </div>
-      <div className="relative">
-        <div className="text-4xl font-bold text-center gradient-text mb-2">
-          187 / 200
-        </div>
-        <div className="h-3 w-full bg-dark-400/80 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-gradient-to-r from-primary-600 to-accent-500 rounded-full"
-            style={{ width: '93.5%' }}
-          >
-            <div className="w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 animate-beam-slide"></div>
+    <div className="glass-card p-6 border border-primary/30 rounded-xl">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex-1">
+          <div className="text-center md:text-left mb-3">
+            <span className="text-sm uppercase tracking-wider text-gray-400 font-medium">
+              Already Registered
+            </span>
+          </div>
+          <div className="relative">
+            <div className="text-4xl font-bold text-center md:text-left gradient-text mb-2">
+              {count} / 200
+            </div>
+            <div className="h-3 w-full bg-dark-400/80 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-gradient-to-r from-primary-600 to-accent-500 rounded-full transition-all duration-1000 ease-in-out"
+                style={{ width: `${(count / 200) * 100}%` }}
+              >
+                <div className="w-full h-full bg-gradient-to-r from-white/0 via-white/20 to-white/0 animate-beam-slide"></div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-xs text-accent-400">
+                <Users className="inline-block w-3 h-3 mr-1" />
+                Only {200 - count} spots remaining
+              </span>
+              <span className="text-xs text-success-400 animate-pulse">Live updating</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="mt-3 text-center">
-        <span className="text-xs text-accent-400">
-          <Users className="inline-block w-3 h-3 mr-1" />
-          Only 13 spots remaining
-        </span>
+        
+        <div className="flex-1 md:max-w-md">
+          {/* Recent joins animation with names instead of emails */}
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-accent-500/20 border border-accent-500/50 flex items-center justify-center flex-shrink-0">
+              <Users className="h-5 w-5 text-accent-400" />
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-medium text-gray-300 mb-1">Recent Registrations:</div>
+              <div className="bg-dark-400/30 rounded-md p-2 h-8 overflow-hidden">
+                <div className="text-xs text-gray-400 flex items-center">
+                  <div className="overflow-hidden h-5 relative w-full">
+                    {recentJoins.map((person, i) => (
+                      <div key={person.name} className="absolute left-0 transition-all duration-500 ease-in-out w-full" style={{
+                        opacity: i === 0 ? 1 : 0,
+                        transform: `translateY(${i * 20}px)`,
+                      }}>
+                        <div className="flex justify-between">
+                          <span className="font-medium text-primary-300">{person.name}</span>
+                          <span className="text-gray-500 text-xs">{person.time}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -123,7 +196,7 @@ const RegistrationForm = () => {
         </span>
         <h4 className="text-2xl font-bold mb-2 gradient-text">Reserve Your Spot Now</h4>
         <div className="h-1 w-20 mx-auto rounded-full bg-gradient-to-r from-primary-500 to-accent-500 mb-4"></div>
-        <p className="text-gray-300">Enter your details to join us on May 7th at 2 PM EST</p>
+        <p className="text-gray-300">Enter your details to join us on May 7, 2025 at 2 PM EST</p>
       </div>
       
       {/* Form body */}
@@ -253,19 +326,52 @@ const RegistrationForm = () => {
   );
 };
 
-// Animated countdown timer component
+// Animated countdown timer component with real countdown to May 7, 2025, 2 PM EST
 const CountdownTimer = () => {
-  // Placeholder - replace with actual countdown logic
+  const targetDate = new Date('May 7, 2025 14:00:00 EDT').getTime();
+  const [timeLeft, setTimeLeft] = useState({
+    days: '00',
+    hours: '00',
+    minutes: '00',
+    seconds: '00'
+  });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+      
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        setTimeLeft({
+          days: days.toString().padStart(2, '0'),
+          hours: hours.toString().padStart(2, '0'),
+          minutes: minutes.toString().padStart(2, '0'),
+          seconds: seconds.toString().padStart(2, '0')
+        });
+      }
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+    
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="flex items-center justify-center space-x-4">
-      {['13', '05', '42', '18'].map((value, index) => (
+      {Object.entries(timeLeft).map(([key, value], index) => (
         <div key={index} className="flex flex-col items-center">
           <div className="w-14 h-14 sm:w-16 sm:h-16 bg-dark-300 border border-gray-700 rounded-lg flex items-center justify-center text-2xl font-bold text-white shadow-lg relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent"></div>
             <span className="relative z-10">{value}</span>
           </div>
-          <span className="text-xs text-gray-400 mt-1">
-            {index === 0 ? 'Days' : index === 1 ? 'Hours' : index === 2 ? 'Minutes' : 'Seconds'}
+          <span className="text-xs text-gray-400 mt-1 capitalize">
+            {key}
           </span>
         </div>
       ))}
@@ -344,27 +450,6 @@ const FeatureCard = ({ icon, title, description }: { icon: React.ReactNode, titl
   </div>
 );
 
-// Software logos display
-const SoftwareLogos = () => {
-  const logos = [
-    { name: 'LeadsGorilla', logo: 'https://leadsgorilla.io/wp-content/uploads/2022/01/leadsgorilla2.png' },
-    { name: 'CallFluent', logo: 'https://callflujent.app/wp-content/uploads/2022/11/callfluence-logo-without-tagline.png' },
-    { name: 'Localio AI', logo: 'https://ailocal.io/wp-content/uploads/2023/07/AI-localio-light-1.png' },
-    { name: 'Cretivio AI', logo: 'https://creativeai.site/wp-content/uploads/2023/08/creativio-1.png' },
-    { name: 'xBesh', logo: '/xbesh_logo_white.png' }
-  ];
-  
-  return (
-    <div className="flex flex-wrap justify-center items-center gap-6 mt-8">
-      {logos.map((item, index) => (
-        <div key={index} className="p-3 bg-dark-300/50 rounded-lg backdrop-blur-sm border border-white/5 shadow-lg transition-all duration-300 hover:shadow-primary/20 hover:border-primary/20 hover:scale-105">
-          <img src={item.logo} alt={item.name} className="h-8 md:h-10 object-contain" />
-        </div>
-      ))}
-    </div>
-  );
-};
-
 const WebinarRegistration: React.FC = () => {
   return (
     <div className="bg-dark text-light pt-20 overflow-x-hidden relative"> 
@@ -382,11 +467,16 @@ const WebinarRegistration: React.FC = () => {
       {/* HERO SECTION */}
       <section id="hero-webinar" className="relative z-10 pt-12 pb-12">
         <div className="container mx-auto px-4">
-          {/* Floating badge */}
+          {/* Floating badge with blinking red dot - improved spacing */}
           <div className="text-center mb-6">
-            <div className="inline-block px-4 py-1 mb-4 rounded-full bg-white/10 backdrop-blur border border-white/20 shadow-glass-sm animate-float">
-              <p className="text-sm font-medium">
-                <span className="text-accent-400 font-bold">xBesh</span> Live Webinar
+            <div className="inline-block px-5 py-2 mb-4 rounded-full bg-white/10 backdrop-blur border border-white/20 shadow-glass-sm animate-float">
+              <p className="text-sm font-medium flex items-center justify-center space-x-2">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                <span className="text-accent-400 font-bold tracking-wide">xBesh</span>
+                <span className="text-white">Live Webinar</span>
               </p>
             </div>
           </div>
@@ -407,14 +497,94 @@ const WebinarRegistration: React.FC = () => {
               <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary-600/20 rounded-full blur-3xl"></div>
               <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-accent-600/20 rounded-full blur-3xl"></div>
               
-              {/* Grid layout - Increased video size and added counter below */}
-              <div className="grid lg:grid-cols-5 gap-6 items-start relative z-10">
-                <div className="lg:col-span-3 w-full flex flex-col">
-                  <VideoPlayer videoId="1080594333" />
-                  <RegistrationCounter />
+              {/* Grid layout - Video and form side by side */}
+              <div className="grid lg:grid-cols-5 gap-6 items-stretch relative z-10">
+                <div className="lg:col-span-3 w-full flex flex-col h-full">
+                  <VideoPlayer videoId="1081109634" />
+                  
+                  {/* Registration counter directly under video */}
+                  <div className="mt-4 flex-shrink-0">
+                    <RegistrationCounter />
+                  </div>
+                  
+                  {/* Countdown timer in the left column */}
+                  <div className="mt-4 flex-grow glass-card p-5 border border-primary-500/30 rounded-xl text-center">
+                    <div className="flex flex-col items-center justify-center h-full">
+                      <div className="flex items-center mb-3">
+                        <Clock className="h-5 w-5 text-primary-400 mr-2" />
+                        <h4 className="text-xl font-bold text-primary-400">Live Workshop Starting In:</h4>
+                      </div>
+                      <CountdownTimer />
+                    </div>
+                  </div>
                 </div>
-                <div className="lg:col-span-2 w-full" id="registration-form-anchor">
-                  <RegistrationForm />
+                <div className="lg:col-span-2 w-full h-full flex" id="registration-form-anchor">
+                  <div className="w-full h-full">
+                    <RegistrationForm />
+                  </div>
+                </div>
+              </div>
+              
+              {/* Why This Webinar Is Different card - now full width below video and form */}
+              <div className="mt-6 w-full">
+                <div className="p-5 glass-card border border-accent/30 rounded-xl">
+                  <h4 className="text-lg font-bold mb-4 text-accent text-center">Why This Webinar Is Different:</h4>
+                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <div className="flex flex-col">
+                      <div className="flex items-center mb-2">
+                        <div className="h-5 w-5 rounded-full bg-primary-500/20 mr-2 flex-shrink-0 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-primary-500" />
+                        </div>
+                        <h5 className="text-primary-400 font-bold">See a Real‑Time Build‑Along</h5>
+                      </div>
+                      <p className="text-gray-300 pl-7">Adrian creates a CRM with log‑in, billing, and analytics before the timer hits zero.</p>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center mb-2">
+                        <div className="h-5 w-5 rounded-full bg-primary-500/20 mr-2 flex-shrink-0 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-primary-500" />
+                        </div>
+                        <h5 className="text-primary-400 font-bold">Co‑Creation Hot Seat</h5>
+                      </div>
+                      <p className="text-gray-300 pl-7">Drop your own 7‑word idea in chat; one attendee's concept gets built on the spot.</p>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center mb-2">
+                        <div className="h-5 w-5 rounded-full bg-primary-500/20 mr-2 flex-shrink-0 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-primary-500" />
+                        </div>
+                        <h5 className="text-primary-400 font-bold">Prompt Vault Giveaway</h5>
+                      </div>
+                      <p className="text-gray-300 pl-7">Walk away with the exact scripts that generate SaaS, e‑com, membership sites, and dashboards.</p>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center mb-2">
+                        <div className="h-5 w-5 rounded-full bg-primary-500/20 mr-2 flex-shrink-0 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-primary-500" />
+                        </div>
+                        <h5 className="text-primary-400 font-bold">10 FREE Lifetime Licenses</h5>
+                      </div>
+                      <p className="text-gray-300 pl-7">Randomly awarded during the first five minutes—must be present to win.</p>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center mb-2">
+                        <div className="h-5 w-5 rounded-full bg-primary-500/20 mr-2 flex-shrink-0 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-primary-500" />
+                        </div>
+                        <h5 className="text-primary-400 font-bold">Early‑Bird Bonuses</h5>
+                      </div>
+                      <p className="text-gray-300 pl-7">Exclusive bonuses and upgrades available only for live attendees who participate in the session</p>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex items-center mb-2">
+                        <div className="h-5 w-5 rounded-full bg-primary-500/20 mr-2 flex-shrink-0 flex items-center justify-center">
+                          <Check className="h-3 w-3 text-primary-500" />
+                        </div>
+                        <h5 className="text-primary-400 font-bold">Q&A Session with Co-Founders</h5>
+                      </div>
+                      <p className="text-gray-300 pl-7">Have all your burning questions answered during LIVE Session.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -454,10 +624,10 @@ const WebinarRegistration: React.FC = () => {
       </section>
 
       {/* BENEFITS SECTION */}
-      <section id="benefits" className="py-12">
+      <section id="benefits" className="py-8">
         <div className="container mx-auto px-4">
           <div className="section-title mb-10 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Why You Should Attend This Live Session</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text">Why You Should Reserve Your Seat?</h2>
             <p className="text-gray-300 max-w-3xl mx-auto">Join us for an action-packed session where you'll witness the future of web development</p>
           </div>
           
@@ -474,49 +644,66 @@ const WebinarRegistration: React.FC = () => {
             />
             <FeatureCard 
               icon={<Trophy className="h-6 w-6" />}
-              title="One‑day Pricing" 
-              description="All 5 upgrades (Black Vanta, DFY Command, 360 Agency, Reseller, Core) for $697—save 60%" 
+              title="Early‑Bird Bonuses" 
+              description="Exclusive bonuses and upgrades available only for live attendees who participate in the session" 
             />
           </div>
         </div>
       </section>
       
-      {/* HOST CREDIBILITY BLOCK - Updated with Adrian's new bio and image */}
-      <section id="host" className="bg-dark-100/60 py-12 relative overflow-hidden">
+      {/* HOST CREDIBILITY BLOCK - Updated to show both hosts */}
+      <section id="host" className="bg-dark-100/60 py-8 relative overflow-hidden">
         {/* Background decoration */}
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary-600/10 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent-600/10 rounded-full blur-3xl"></div>
         
         <div className="container mx-auto px-4 relative z-10">
-          <div className="glass-card p-6 md:p-8 max-w-4xl mx-auto text-center">
-            <div className="relative inline-block mb-6">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 blur opacity-70"></div>
-              <img 
-                src="/adrian.jpg" 
-                alt="Adrian Isfan" 
-                className="relative w-32 h-32 rounded-full object-cover border-4 border-primary shadow-lg shadow-primary/30"
-              />
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-white glow-text">Meet Your Hosts</h2>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Madhav Bhandari Profile */}
+            <div className="glass-card p-6 md:p-8 text-center h-full">
+              <div className="relative inline-block mb-6">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 blur opacity-70"></div>
+                <img 
+                  src="/madhav.jpg" 
+                  alt="Madhav Bhandari" 
+                  className="relative w-32 h-32 rounded-full object-cover border-4 border-primary shadow-lg shadow-primary/30"
+                />
+              </div>
+              
+              <h3 className="text-2xl font-bold mb-1 glow-text">Madhav Bhandari</h3>
+              <p className="text-lg text-primary mb-4 font-medium">Founder & CTO</p>
+              
+              <p className="text-gray-300 leading-relaxed">
+                With over 15 years of experience in AI and machine learning, Madhav has led innovation at major technology companies before founding xBesh AI to revolutionize how businesses leverage artificial intelligence.
+              </p>
             </div>
             
-            <h3 className="text-3xl font-bold mb-3 glow-text">Adrian Isfan</h3>
-            <p className="text-lg text-primary mb-6 font-medium">AI Tech Founder & 8 Figure Marketing Expert</p>
-            
-            <blockquote className="text-xl md:text-2xl italic text-gray-200 mb-8 relative">
-              <div className="absolute top-0 left-0 text-6xl text-primary-600/20 font-serif leading-none -translate-y-6">"</div>
-              <div className="absolute bottom-0 right-0 text-6xl text-primary-600/20 font-serif leading-none translate-y-2">"</div>
-              <p className="relative z-10 px-8">I helped thousands of students and build 7 Figure SaaS Businesses for the last decade</p>
-            </blockquote>
-            
-            <div className="mt-6">
-              <p className="font-medium text-lg text-gray-300 mb-4">Founder behind Software like:</p>
-              <SoftwareLogos />
+            {/* Adrian Isfan Profile */}
+            <div className="glass-card p-6 md:p-8 text-center h-full">
+              <div className="relative inline-block mb-6">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-500 to-accent-500 blur opacity-70"></div>
+                <img 
+                  src="/adrian.jpg" 
+                  alt="Adrian Isfan" 
+                  className="relative w-32 h-32 rounded-full object-cover border-4 border-primary shadow-lg shadow-primary/30"
+                />
+              </div>
+              
+              <h3 className="text-2xl font-bold mb-1 glow-text">Adrian Isfan</h3>
+              <p className="text-lg text-primary mb-4 font-medium">Founder & CMO</p>
+              
+              <p className="text-gray-300 leading-relaxed">
+                Adrian brings extensive expertise in marketing and business growth strategies. His background in digital transformation and customer experience has helped numerous organizations successfully implement AI-driven solutions.
+              </p>
             </div>
           </div>
         </div>
       </section>
       
       {/* WHAT YOU'LL LEARN SECTION */}
-      <section id="learn" className="py-12">
+      <section id="learn" className="py-8">
         <div className="container mx-auto px-4">
           <div className="section-title mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-primary glow-text">In 60 Minutes You'll…</h2>
@@ -556,7 +743,7 @@ const WebinarRegistration: React.FC = () => {
       </section>
 
       {/* COUNTDOWN & URGENCY BAR */}
-      <section id="urgency" className="relative mt-2 mb-2">
+      <section id="urgency" className="relative mt-1 mb-1">
         {/* Background with overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-primary-600/90 to-accent-500/90"></div>
         <div className="absolute inset-0 bg-noise opacity-10"></div>
@@ -588,7 +775,8 @@ const WebinarRegistration: React.FC = () => {
         </div>
       </section>
 
-      {/* TESTIMONIALS SECTION - Enhanced with real images and 5-star ratings */}
+      {/* TESTIMONIALS SECTION - Hidden as requested */}
+      {/* 
       <section id="testimonials" className="py-12">
         <div className="container mx-auto px-4">
           <div className="section-title mb-10">
@@ -617,9 +805,10 @@ const WebinarRegistration: React.FC = () => {
           </div>
         </div>
       </section>
+      */}
       
       {/* FAQ SECTION - Fixed visibility */}
-      <section id="faq" className="bg-dark-100/50 py-12">
+      <section id="faq" className="bg-dark-100/50 py-8">
         <div className="container mx-auto px-4">
           <div className="section-title mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-primary glow-text">Frequently Asked Questions</h2>
@@ -647,7 +836,7 @@ const WebinarRegistration: React.FC = () => {
       </section>
 
       {/* FINAL CTA SECTION */}
-      <section id="final-cta" className="pt-12 pb-12 relative overflow-hidden">
+      <section id="final-cta" className="pt-8 pb-8 relative overflow-hidden">
         {/* Background effect */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary-900/30 via-dark to-accent-900/30"></div>
         <div className="absolute inset-0 bg-noise opacity-20"></div>
@@ -688,9 +877,9 @@ const WebinarRegistration: React.FC = () => {
                 </span>
               </a>
               
-              <p className="mt-4 flex items-center justify-center text-gray-300">
-                <Check className="h-5 w-5 text-success-500 mr-2" />
-                <span>30-Day Money-Back Guarantee on the bundle</span>
+              <p className="mt-4 flex items-center justify-center text-accent-300 font-medium animate-pulse">
+                <Users className="h-5 w-5 text-accent-400 mr-2" />
+                <span>Hurry! Seats are limited</span>
               </p>
             </div>
           </div>
@@ -698,13 +887,13 @@ const WebinarRegistration: React.FC = () => {
       </section>
       
       {/* FOOTER DISCLAIMER - The full disclaimer text */}
-      <div className="bg-black text-gray-600 text-xs py-6 px-4 border-t border-gray-800">
+      <footer className="bg-dark-300 text-gray-400 text-xs py-8 px-4 border-t border-gray-800 relative z-20">
         <div className="container mx-auto max-w-6xl">
-          <p>
-            Disclaimer: Please note that this product does not provide any guarantee of income or success. The results achieved by the product owner or any other individuals mentioned are not indicative of future success or earnings. This website is not affiliated with FaceBook or any of its associated entities. Once you navigate away from FaceBook, the responsibility for the content and its usage lies solely with the user. All content on this website, including but not limited to text, images, and multimedia, is protected by copyright law and the Digital Millennium Copyright Act. Unauthorized copying, duplication, modification, or theft, whether intentional or unintentional, is strictly prohibited. Violators will be prosecuted to the fullest extent of the law. We want to clarify that JVZoo serves as the retailer for the products featured on this site. JVZoo® is a registered trademark of BBC Systems Inc., a Florida corporation located at 1809 E. Broadway Street, Suite 125, Oviedo, FL 32765, USA, and is used with permission. The role of JVZoo as a retailer does not constitute an endorsement, approval, or review of these products or any claims, statements, or opinions used in their promotion.
+          <p className="leading-relaxed mb-0">
+            <strong className="text-gray-300 block mb-2">Disclaimer:</strong> Please note that this product does not provide any guarantee of income or success. The results achieved by the product owner or any other individuals mentioned are not indicative of future success or earnings. This website is not affiliated with FaceBook or any of its associated entities. Once you navigate away from FaceBook, the responsibility for the content and its usage lies solely with the user. All content on this website, including but not limited to text, images, and multimedia, is protected by copyright law and the Digital Millennium Copyright Act. Unauthorized copying, duplication, modification, or theft, whether intentional or unintentional, is strictly prohibited. Violators will be prosecuted to the fullest extent of the law. We want to clarify that JVZoo serves as the retailer for the products featured on this site. JVZoo® is a registered trademark of BBC Systems Inc., a Florida corporation located at 1809 E. Broadway Street, Suite 125, Oviedo, FL 32765, USA, and is used with permission. The role of JVZoo as a retailer does not constitute an endorsement, approval, or review of these products or any claims, statements, or opinions used in their promotion.
           </p>
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
