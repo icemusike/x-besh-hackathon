@@ -145,22 +145,75 @@ const RegistrationCounter = () => {
   );
 };
 
-// Enhanced registration form with modern styling
+// Enhanced registration form with modern styling and functional webhook submission
 const RegistrationForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formStatus, setFormStatus] = useState<null | 'success' | 'error'>(null);
+  const [countdown, setCountdown] = useState(3);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  // Handle redirect countdown after successful submission
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    
+    if (formStatus === 'success') {
+      timer = setInterval(() => {
+        setCountdown(prev => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            // Redirect to confirmation page
+            window.location.href = 'https://access.xbesh.com/webinar-confirmation.html';
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [formStatus]);
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulated form submission
-    setTimeout(() => {
-      setFormStatus('success');
+    try {
+      // Prepare the payload with the form data
+      const payload = {
+        name,
+        email,
+        registrationDate: new Date().toISOString(),
+        source: window.location.href,
+        userAgent: navigator.userAgent
+      };
+      
+      // Send data to the webhook
+      const response = await fetch('https://callflujent.app.n8n.cloud/webhook/b278b1de-76bb-45e3-a9f3-db7b7a742342', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+      
+      if (response.ok) {
+        // Set success status if the webhook call was successful
+        setFormStatus('success');
+      } else {
+        // Set error status if the webhook call failed
+        setFormStatus('error');
+        console.error('Webhook submission failed');
+      }
+    } catch (error) {
+      // Handle any errors that occurred during the fetch
+      setFormStatus('error');
+      console.error('Error submitting form:', error);
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
   
   if (formStatus === 'success') {
@@ -173,12 +226,36 @@ const RegistrationForm = () => {
           </div>
         </div>
         <h3 className="text-2xl font-bold mb-4 text-white text-center">Registration Confirmed!</h3>
-        <p className="text-gray-300 mb-8 text-center max-w-md">
+        <p className="text-gray-300 mb-6 text-center max-w-md">
           You're all set! We've sent confirmation details to your email. We can't wait to see you at the webinar!
         </p>
-        <a href="#webinar-details" className="btn btn-primary text-lg">
-          View Webinar Details
-        </a>
+        <p className="text-primary-400 text-sm mb-8 animate-pulse">
+          Redirecting to confirmation page in {countdown} seconds...
+        </p>
+      </div>
+    );
+  }
+  
+  if (formStatus === 'error') {
+    return (
+      <div className="bg-dark-200 p-8 rounded-2xl shadow-2xl border border-gray-700/50 h-full flex flex-col justify-center items-center">
+        <div className="relative mb-8">
+          <div className="relative w-20 h-20 rounded-full bg-red-600/40 flex items-center justify-center border-2 border-red-500 shadow-[0_0_20px_rgba(255,50,50,0.4)]">
+            <svg className="h-10 w-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+        </div>
+        <h3 className="text-2xl font-bold mb-4 text-white text-center">Something went wrong</h3>
+        <p className="text-gray-300 mb-8 text-center max-w-md">
+          We couldn't process your registration. Please try again or contact support if the problem persists.
+        </p>
+        <button 
+          onClick={() => setFormStatus(null)} 
+          className="bg-gradient-to-r from-primary-600 to-accent-600 text-white py-2 px-6 rounded-lg font-medium"
+        >
+          Try Again
+        </button>
       </div>
     );
   }
